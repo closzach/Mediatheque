@@ -1,3 +1,11 @@
 from django.contrib import admin
+from LivresListe.models import *
 
-# Register your models here.
+admin.site.register([
+    Serie,
+    Auteur,
+    Tag,
+    Lecteur,
+    Livre,
+    Lecture
+])
