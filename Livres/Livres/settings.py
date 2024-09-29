@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'LivresListe',
 ]
 
@@ -81,7 +82,7 @@ DATABASES = {
         'NAME': 'livres',
         'USER': 'root',
         'PASSWORD': 'root',
-        'HOST': 'bd',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }

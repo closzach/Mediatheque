@@ -1,6 +1,15 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from .views import *
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register('series', SerieViewSet)
+router.register('auteurs', AuteurViewSet)
+router.register('tags', TagViewSet)
+router.register('lecteurs', LecteurViewSet)
+router.register('livres', LivreViewSet)
+router.register('lectures', LectureViewSet)
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', include(router.urls))
 ]
