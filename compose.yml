@@ -1,5 +1,21 @@
 services:
+  bd:
+    image: "mariadb:10.11.8"
+    container_name: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: "root"
+      MARIADB_DATABASE: "livres"
+
   livres:
     build: .
+    depends_on:
+      - bd
+    command: "python /app/Livres/manage.py migrate && python /app/Livres/manage.py runserver 0.0.0.0:8000"
+    container_name: django
     ports: 
       - "8000:8000"
+    environment:
+      - DB_HOST=bd
+      - DB_NAME=livres
+      - DB_USER=root
+      - DB_PASSWORD=root

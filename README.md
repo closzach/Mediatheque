@@ -13,7 +13,7 @@ Pour pouvoir utiliser cette méthode d'installation il faut au préalable avoir 
 
 Après être sûr d'avoir docker et docker-compose, lancer la commande suivante à la racine du projet (là où sont présents les fichiers Dockerfile et compose.yml) : 
 ```sh
-docker compose up
+docker compose up -d
 ```
 
 Cela va créer un conteneur et une image et un conteneur docker l'exécuter.

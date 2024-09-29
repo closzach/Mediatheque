@@ -1,6 +1,6 @@
 FROM python:3.12.5-slim
 WORKDIR /app
 COPY . /app
-RUN pip install -r requirements.txt && python /app/Livres/manage.py migrate
-EXPOSE 8000
-CMD [ "python", "/app/Livres/manage.py", "runserver", "0.0.0.0:8000"]
+RUN apt-get update && apt-get install -y python3-dev default-libmysqlclient-dev build-essential pkg-config
+RUN python -m pip install -r requirements.txt
+RUN python /app/Livres/manage.py migrate
