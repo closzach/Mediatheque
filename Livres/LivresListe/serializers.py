@@ -19,7 +19,7 @@ class TagSerializer(ModelSerializer):
 class LecteurSerializer(ModelSerializer):
     class Meta:
         model = Lecteur
-        fields = '_all__'
+        fields = '__all__'
 
 class LivreSerializer(ModelSerializer):
     serie = SerieSerializer(read_only=True)

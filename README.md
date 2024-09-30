@@ -42,3 +42,25 @@ Après avoir fait l'installation et lancé avec une des méthodes, accèder au s
 ```
 http://127.0.0.1:8000/
 ```
+
+## Documentation d'API
+
+### Swagger
+```
+http://127.0.0.1:8000/swagger/
+```
+
+### Swagger JSON
+```
+http://127.0.0.1:8000/swagger.json/
+```
+
+### Swagger YAML
+```
+http://127.0.0.1:8000/swagger.yaml/
+```
+
+### Redoc
+```
+http://127.0.0.1:8000/redoc/
+```
