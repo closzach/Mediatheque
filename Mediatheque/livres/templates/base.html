@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            {% block title %}
+            {% endblock %}
+        </title>
+        {% block metas %}
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        {% endblock %}
+        {% block styles %}
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+            <!-- navbar -->
+            <!-- barre de recherche -->
+        </header>
+        <main>
+            <section>
+                {% block content %}
+                {% endblock %}
+            </section>
+        </main>
+    </body>
+</html>
