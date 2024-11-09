@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+{% load static %}
+
 <html lang="fr">
     <head>
         <meta charset="utf-8">
@@ -6,13 +9,36 @@
             Médiathèque
         </title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
     </head>
     <body>
         <main>
             <h1>Bienvenue sur le site de gestion de votre médiathèque !</h1>
             <p>Pour continuer choississez une catégorie d'entrée que vous souhaité consulter.</p>
-            <a href="{% url 'livres:accueil' %}">Livres (Romans, BD, Comics, Mangas, ...)</a>
-            <a href="{% url 'schema-swagger-ui' %}">Documentation de l'API</a>
+            <div class="card-group">
+                <a href="{% url 'livres:accueil' %}">
+                    <div class="card">
+                        <img src="{% static 'images/livre.jpg' %}" alt="Livres" style="width: 20%;">
+                        <div class="card-body">
+                            <h5>Livres (Romans, BD, Comics, Mangas, ...)</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <ul>
+                <li>
+                    <a href="{% url 'livres:accueil' %}">Livres (Romans, BD, Comics, Mangas, ...)</a>
+                </li>
+                <li>
+                    <a href="{% url 'schema-swagger-ui' %}">Documentation de l'API</a>
+                </li>
+                <li>
+                    <a href="">Animés/Séries/Films</a>
+                </li>
+                <li>
+                    <a href="">DVD/Bluray</a>
+                </li>
+            </ul>
         </main>
     </body>
 </html>
