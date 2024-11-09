@@ -1,5 +1,5 @@
 from django.contrib import admin
-from LivresListe.models import *
+from api.models import *
 
 admin.site.register([
     Serie,
