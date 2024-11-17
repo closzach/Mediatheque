@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}{{ auteur.nom }}{% endblock %}
+{% block content %}
+<h1>{{ auteur.nom }}</h1>
+{% if auteur.date_naissance %}
+<p>Date de naissance : {{ auteur.date_naissance }}</p>
+{% endif %}
+{% if auteur.date_mort %}
+<p>Décès : {{ auteur.date_mort }}</p>
+{% endif %}
+{% endblock %}

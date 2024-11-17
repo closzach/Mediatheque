@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Rechercher{% endblock %}
+{% block content %}
+<h1>Rechercher un livre</h1>
+<ul>
+    {% for livre in livres %}
+    <li>livre.nom</li>
+    {% endfor %}
+</ul>
+{% endblock %}

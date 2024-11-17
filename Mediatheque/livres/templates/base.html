@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+{% load static %}
+
 <html lang="fr">
     <head>
         <meta charset="utf-8">
@@ -10,12 +13,42 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% endblock %}
         {% block styles %}
+        <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
         {% endblock %}
     </head>
     <body>
         <header>
-            <!-- navbar -->
-            <!-- barre de recherche -->
+            <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+                <a class="navbar-brand" href="{% url 'hub' %}">Médiathèque</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'livres:accueil' %}">Accueil Livres</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'livres:rechercher' %}">Rechercher un livre</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Ma bibliothèque</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'livres:creer_livre' %}">Créer un livre</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'livres:creer_auteur' %}">Créer un auteur</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'livres:liste_auteurs' %}">Auteurs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'livres:creer_tag' %}">Créer tag</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>            
         </header>
         <main>
             <section>

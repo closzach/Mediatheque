@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Créer livre{% endblock %}
+{% block content %}
+<h1>{{ livre.nom }}</h1>
+<p>Sorti le : {{ livre.date_sortie }}</p>
+<p>Nombre de pages : {{ livre.nombre_pages }}</p>
+<p>Auteurs : </p>
+<ul>
+    {% for auteur in livre.auteurs %}
+    <li>
+        {{ auteur.nom }}
+    </li>
+    {% endfor %}
+</ul>
+{% if livre.serie %}
+<p>Serie : {{ livre.serie.nom }}</p>
+{% endif %}
+<ul>
+    {% for tag in livre.tags %}
+    <li>tag.tag</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
