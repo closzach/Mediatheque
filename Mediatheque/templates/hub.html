@@ -1,44 +1,110 @@
 <!DOCTYPE html>
-
 {% load static %}
 
 <html lang="fr">
-    <head>
-        <meta charset="utf-8">
-        <title>
-            Médiathèque
-        </title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
-    </head>
-    <body>
-        <main>
+<head>
+    <meta charset="utf-8">
+    <title>Médiathèque</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        main {
+            padding: 3rem 1rem;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card img {
+            height: 150px;
+            object-fit: cover;
+        }
+        h1 {
+            color: #343a40;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        p {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #6c757d;
+        }
+        .card-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+        .list-group a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .list-group a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="container">
             <h1>Bienvenue sur le site de gestion de votre médiathèque !</h1>
-            <p>Pour continuer choississez une catégorie d'entrée que vous souhaité consulter.</p>
+            <p>Pour continuer, choisissez une catégorie que vous souhaitez consulter.</p>
             <div class="card-group">
-                <a href="{% url 'livres:accueil' %}">
-                    <div class="card">
-                        <img src="{% static 'images/livre.jpg' %}" alt="Livres" style="width: 20%;">
+                <a href="{% url 'livres:accueil' %}" class="text-decoration-none">
+                    <div class="card text-center">
+                        <img src="{% static 'images/livre.jpg' %}" alt="Livres" class="card-img-top">
                         <div class="card-body">
-                            <h5>Livres (Romans, BD, Comics, Mangas, ...)</h5>
+                            <h5 class="card-title">Livres</h5>
+                            <p class="card-text">Romans, BD, Comics, Mangas, ...</p>
+                        </div>
+                    </div>
+                </a>
+                <a href="{% url 'schema-swagger-ui' %}" class="text-decoration-none">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Documentation API</h5>
+                            <p class="card-text">Consultez les spécifications de l'API.</p>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="text-decoration-none">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Animés/Séries/Films</h5>
+                            <p class="card-text">Découvrez vos médias préférés.</p>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="text-decoration-none">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">DVD/Bluray</h5>
+                            <p class="card-text">Collectionnez vos classiques.</p>
                         </div>
                     </div>
                 </a>
             </div>
-            <ul>
-                <li>
+            <ul class="list-group list-group-flush mt-4">
+                <li class="list-group-item">
                     <a href="{% url 'livres:accueil' %}">Livres (Romans, BD, Comics, Mangas, ...)</a>
                 </li>
-                <li>
+                <li class="list-group-item">
                     <a href="{% url 'schema-swagger-ui' %}">Documentation de l'API</a>
                 </li>
-                <li>
-                    <a href="">Animés/Séries/Films</a>
+                <li class="list-group-item">
+                    <a href="#">Animés/Séries/Films</a>
                 </li>
-                <li>
-                    <a href="">DVD/Bluray</a>
+                <li class="list-group-item">
+                    <a href="#">DVD/Bluray</a>
                 </li>
             </ul>
-        </main>
-    </body>
+        </div>
+    </main>
+    <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+</body>
 </html>

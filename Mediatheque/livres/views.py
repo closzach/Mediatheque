@@ -6,6 +6,7 @@ def accueil(request):
     return render(request, 'accueil.html')
 
 def lister_livres(request):
+    livres = Livre.objects.prefetch_related('auteurs')
     tags = Tag.objects.all()
     if request.method == 'POST':
         search_form = SearchForm(request.POST)
@@ -13,7 +14,6 @@ def lister_livres(request):
             recherche = search_form.cleaned_data['recherche']
             livres = Livre.objects.filter(nom__icontains=recherche).prefetch_related('auteurs')
     else:
-        livres = Livre.objects.prefetch_related('auteurs')
         search_form = SearchForm()
     return render(request, 'livres/liste_livres.html', {'livres': livres, 'tags': tags, 'search_form': search_form})
 
@@ -35,11 +35,19 @@ def creer_livre(request):
 
 def liste_auteurs(request):
     auteurs = Auteur.objects.all()
-    return render(request, 'auteurs/liste_auteurs.html', {'auteurs': auteurs})
+    if request.method == 'POST':
+        search_form = SearchForm(request.POST)
+        if search_form.is_valid():
+            recherche = search_form.cleaned_data['recherche']
+            auteurs = Auteur.objects.filter(nom__icontains=recherche)
+    else:
+        search_form = SearchForm()
+    return render(request, 'auteurs/liste_auteurs.html', {'auteurs': auteurs, 'search_form': search_form})
 
 def detail_auteur(request, id):
     auteur = get_object_or_404(Auteur, id=id)
-    return render(request, 'auteurs/detail_auteur.html', {'auteur': auteur})
+    livres = Livre.objects.filter(auteurs=auteur)
+    return render(request, 'auteurs/detail_auteur.html', {'auteur': auteur, 'livres': livres})
 
 def creer_auteur(request):
     if request.method == 'POST':

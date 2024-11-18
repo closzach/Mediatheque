@@ -1,11 +1,47 @@
 {% extends 'base.html' %}
+
 {% block title %}{{ auteur.nom }}{% endblock %}
+
 {% block content %}
-<h1>{{ auteur.nom }}</h1>
-{% if auteur.date_naissance %}
-<p>Date de naissance : {{ auteur.date_naissance }}</p>
-{% endif %}
-{% if auteur.date_mort %}
-<p>Décès : {{ auteur.date_mort }}</p>
-{% endif %}
+<div class="container mt-5">
+    <div class="row">
+        <!-- Section principale -->
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="card-title mb-0">{{ auteur.nom }}</h2>
+                </div>
+                <div class="card-body">
+                    <!-- Dates de naissance et décès -->
+                    {% if auteur.date_naissance %}
+                    <p><strong>Date de naissance :</strong> {{ auteur.date_naissance }}</p>
+                    {% endif %}
+                    {% if auteur.date_mort %}
+                    <p><strong>Décès :</strong> {{ auteur.date_mort }}</p>
+                    {% endif %}
+
+                    <!-- Liste des livres -->
+                    <h5 class="mt-4">Livres :</h5>
+                    {% if livres %}
+                        <ul class="list-group list-group-flush">
+                            {% for livre in livres %}
+                            <li class="list-group-item">
+                                <a href="{% url 'livres:detail_livre' livre.id %}" class="text-decoration-none">
+                                    {{ livre.nom }}
+                                </a>
+                                <span class="text-muted">({{ livre.date_sortie }})</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">Cet auteur n'a pas encore de livres enregistrés.</p>
+                    {% endif %}
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{% url 'livres:liste_auteurs' %}" class="btn btn-outline-primary">Retour à la liste des auteurs</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

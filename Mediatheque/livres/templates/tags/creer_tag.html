@@ -2,9 +2,9 @@
 {% block title %}Créer Tag{% endblock %}
 {% block content %}
 <h1>Créer un nouveau tag</h1>
-<form method="POST">
+<form method="POST" class="container">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value="Enregistrer">
+    <input class="btn btn-primary" type="submit" value="Enregistrer">
 </form>
 {% endblock %}
