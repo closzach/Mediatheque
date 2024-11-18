@@ -11,9 +11,9 @@ def lister_livres(request):
         search_form = SearchForm(request.POST)
         if search_form.is_valid():
             recherche = search_form.cleaned_data['recherche']
-            livres = Livre.objects.filter(nom__icontains=recherche)
+            livres = Livre.objects.filter(nom__icontains=recherche).prefetch_related('auteurs')
     else:
-        livres = Livre.objects.all()
+        livres = Livre.objects.prefetch_related('auteurs')
         search_form = SearchForm()
     return render(request, 'livres/liste_livres.html', {'livres': livres, 'tags': tags, 'search_form': search_form})
 
