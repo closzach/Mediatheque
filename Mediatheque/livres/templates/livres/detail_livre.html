@@ -6,7 +6,7 @@
 <p>Nombre de pages : {{ livre.nombre_pages }}</p>
 <p>Auteurs : </p>
 <ul>
-    {% for auteur in livre.auteurs %}
+    {% for auteur in auteurs %}
     <li>
         {{ auteur.nom }}
     </li>
@@ -16,8 +16,8 @@
 <p>Serie : {{ livre.serie.nom }}</p>
 {% endif %}
 <ul>
-    {% for tag in livre.tags %}
-    <li>tag.tag</li>
+    {% for tag in tags %}
+    <li>{{ tag.tag }}</li>
     {% endfor %}
 </ul>
 

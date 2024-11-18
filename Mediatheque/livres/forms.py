@@ -60,3 +60,14 @@ class TagForm(forms.ModelForm):
                 'class': 'form-check-input'
             })
         }
+
+class SearchForm(forms.Form):
+    recherche = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={
+            'class':'form-control',
+            'placeholder':'Rechercher',
+            'aria-label': 'Rechercher',
+            'aria-describedby': 'search-button'
+        })
+    )
