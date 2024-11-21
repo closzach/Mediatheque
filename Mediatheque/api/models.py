@@ -33,6 +33,8 @@ class Livre(models.Model):
     nom = models.CharField(max_length=100)
     date_sortie = models.DateField()
     nombre_pages = models.IntegerField()
+    isbn = models.CharField(max_length=100, unique=True)
+    image = models.ImageField(upload_to="images/livres", default="default.png", blank=True)
 
     serie = models.ForeignKey(Serie, on_delete=models.CASCADE, null=True, blank=True)
     auteurs = models.ManyToManyField(Auteur)

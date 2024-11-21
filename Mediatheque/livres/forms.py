@@ -17,6 +17,12 @@ class LivreForm(forms.ModelForm):
             'nombre_pages': forms.NumberInput(attrs={
                 'class': 'form-control'
             }),
+            'isbn': forms.TextInput(attrs={
+                'class': 'form-control'
+            }),
+            'image': forms.FileInput(attrs={
+                'class': 'form-control'
+            }),
             'serie': forms.Select(attrs={
                 'class': 'form-control'
             }),

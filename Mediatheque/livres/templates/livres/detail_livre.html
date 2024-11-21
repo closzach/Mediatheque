@@ -1,44 +1,52 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}{{ livre.nom }}{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
             <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h2>{{ livre.nom }}</h2>
-                </div>
-                <div class="card-body">
-                    <p class="text-muted"><strong>Sorti le :</strong> {{ livre.date_sortie }}</p>
-                    <p class="text-muted"><strong>Nombre de pages :</strong> {{ livre.nombre_pages }}</p>
-
-                    {% if livre.serie %}
-                    <p><strong>Serie :</strong> {{ livre.serie.nom }}</p>
-                    {% endif %}
-
-                    <div class="mt-4">
-                        <h5>Auteurs :</h5>
-                        <ul class="list-group list-group-flush">
-                            {% for auteur in auteurs %}
-                            <li class="list-group-item">{{ auteur.nom }}</li>
-                            {% endfor %}
-                        </ul>
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{% static livre.image %}" class="img-fluid rounded-start" alt="{{ livre.nom }}" style="height: 100%; object-fit: cover;">
                     </div>
+                    <div class="col-md-8">
+                        <div class="card-header bg-primary text-white">
+                            <h2>{{ livre.nom }}</h2>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted"><strong>Sorti le :</strong> {{ livre.date_sortie }}</p>
+                            <p class="text-muted"><strong>Nombre de pages :</strong> {{ livre.nombre_pages }}</p>
+                            <p class="text-muted"><strong>ISBN :</strong> {{ livre.isbn }}</p>
 
-                    <div class="mt-4">
-                        <h5>Tags :</h5>
-                        <div class="d-flex flex-wrap">
-                            {% for tag in tags %}
-                            <span class="badge bg-secondary m-1">{{ tag.tag }}</span>
-                            {% endfor %}
+                            {% if livre.serie %}
+                            <p><strong>Série :</strong> {{ livre.serie.nom }}</p>
+                            {% endif %}
+
+                            <div class="mt-4">
+                                <h5>Auteurs :</h5>
+                                <ul class="list-group list-group-flush">
+                                    {% for auteur in auteurs %}
+                                    <li class="list-group-item">{{ auteur.nom }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                            <div class="mt-4">
+                                <h5>Tags :</h5>
+                                <div class="d-flex flex-wrap">
+                                    {% for tag in tags %}
+                                    <span class="badge bg-secondary m-1">{{ tag.tag }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center">
+                            <a href="{% url 'livres:rechercher' %}" class="btn btn-outline-primary">Retour à la liste des livres</a>
                         </div>
                     </div>
-
-                </div>
-                <div class="card-footer text-center">
-                    <a href="{% url 'livres:rechercher' %}" class="btn btn-outline-primary">Retour à la liste des livres</a>
                 </div>
             </div>
         </div>

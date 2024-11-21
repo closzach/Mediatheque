@@ -2,7 +2,7 @@
 {% block title %}Créer livre{% endblock %}
 {% block content %}
 <h1>Création d'un nouveau livre</h1>
-<form method="POST" class="container">
+<form method="POST" class="container" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form }}
     <input class="btn btn-primary" type="submit" value="Enregistrer">

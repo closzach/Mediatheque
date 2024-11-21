@@ -25,7 +25,7 @@ def detail_livre(request, id):
 
 def creer_livre(request):
     if request.method == 'POST':
-        livre_form = LivreForm(request.POST)
+        livre_form = LivreForm(request.POST, request.FILES)
         if livre_form.is_valid():
             livre = livre_form.save()
             return redirect('livres:detail_livre', id=livre.id)
