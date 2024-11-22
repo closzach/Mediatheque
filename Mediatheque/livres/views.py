@@ -56,6 +56,16 @@ def creer_auteur(request):
         auteur_form = AuteurForm()
     return render(request, 'auteurs/creer_auteur.html', {'form': auteur_form})
 
+def modifier_auteur(request, id):
+    auteur = get_object_or_404(Auteur, id=id)
+    auteur_form = AuteurForm(instance=auteur)
+    if request.method == 'POST':
+        auteur_form = AuteurForm(request.POST, instance=auteur)
+        if auteur_form.has_changed() and auteur_form.is_valid():
+            auteur_form.save()
+            return redirect('livres:detail_auteur', id=id)
+    return render(request, 'auteurs/modifier_auteur.html', {'auteur': auteur, 'form': auteur_form})
+
 def creer_tag(request):
     if request.method == 'POST':
         tag_form = TagForm(request.POST)
