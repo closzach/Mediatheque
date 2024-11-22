@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}{{ livre.nom }}{% endblock %}
+{% block content %}
+<h1>Modification de {{ livre.nom }}</h1>
+<form method="POST" class="container" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <input class="btn btn-primary" type="submit" value="Enregistrer">
+</form>
+{% endblock %}

@@ -30,6 +30,16 @@ def creer_livre(request):
         livre_form = LivreForm()
     return render(request, 'livres/creer_livre.html', {'form': livre_form})
 
+def modifier_livre(request, id):
+    livre = get_object_or_404(Livre, id=id)
+    livre_form = AuteurForm(instance=livre)
+    if request.method == 'POST':
+        livre_form = AuteurForm(request.POST, instance=livre)
+        if livre_form.has_changed() and livre_form.is_valid():
+            livre_form.save()
+            return redirect('livres:detail_livre', id=id)
+    return render(request, 'livres/modifier_livre.html', {'livre': livre, 'form': livre_form})
+
 def liste_auteurs(request):
     auteurs = Auteur.objects.all()
     if request.method == 'POST':
