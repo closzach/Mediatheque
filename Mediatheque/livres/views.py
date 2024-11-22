@@ -2,9 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import LivreForm, AuteurForm, TagForm, SearchForm
 from api.models import Livre, Auteur, Tag
 
-def accueil(request):
-    return render(request, 'accueil.html')
-
 def lister_livres(request):
     livres = Livre.objects.prefetch_related('auteurs')
     tags = Tag.objects.all()

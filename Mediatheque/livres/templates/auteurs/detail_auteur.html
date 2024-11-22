@@ -5,22 +5,18 @@
 {% block content %}
 <div class="container mt-5">
     <div class="row">
-        <!-- Section principale -->
         <div class="col-md-8 offset-md-2">
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white">
                     <h2 class="card-title mb-0">{{ auteur.nom }}</h2>
                 </div>
                 <div class="card-body">
-                    <!-- Dates de naissance et décès -->
                     {% if auteur.date_naissance %}
                     <p><strong>Date de naissance :</strong> {{ auteur.date_naissance }}</p>
                     {% endif %}
                     {% if auteur.date_mort %}
                     <p><strong>Décès :</strong> {{ auteur.date_mort }}</p>
                     {% endif %}
-
-                    <!-- Liste des livres -->
                     <h5 class="mt-4">Livres :</h5>
                     {% if livres %}
                         <ul class="list-group list-group-flush">
@@ -28,8 +24,8 @@
                             <li class="list-group-item">
                                 <a href="{% url 'livres:detail_livre' livre.id %}" class="text-decoration-none">
                                     {{ livre.nom }}
+                                    <span class="text-muted">({{ livre.date_sortie }})</span>
                                 </a>
-                                <span class="text-muted">({{ livre.date_sortie }})</span>
                             </li>
                             {% endfor %}
                         </ul>

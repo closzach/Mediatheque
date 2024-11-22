@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <title>Médiathèque</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="{% static 'icons/house.svg' %}" type="image/svg+xml">
     <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
     <style>
         body {
@@ -55,9 +56,13 @@
             <h1>Bienvenue sur le site de gestion de votre médiathèque !</h1>
             <p>Pour continuer, choisissez une catégorie que vous souhaitez consulter.</p>
             <div class="card-group">
-                <a href="{% url 'livres:accueil' %}" class="text-decoration-none">
+                <a href="{% url 'livres:rechercher' %}" class="text-decoration-none">
                     <div class="card text-center">
-                        <img src="{% static 'images/livre.jpg' %}" alt="Livres" class="card-img-top">
+                        {% if livre %}
+                        <img src="{{ livre.image.url }}" alt="Livres" class="card-img-top">
+                        {% else %}
+                        <img src="{% static 'default.png' %}" alt="Livres" class="card-img-top">
+                        {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">Livres</h5>
                             <p class="card-text">Romans, BD, Comics, Mangas, ...</p>
@@ -91,7 +96,7 @@
             </div>
             <ul class="list-group list-group-flush mt-4">
                 <li class="list-group-item">
-                    <a href="{% url 'livres:accueil' %}">Livres (Romans, BD, Comics, Mangas, ...)</a>
+                    <a href="{% url 'livres:rechercher' %}">Livres (Romans, BD, Comics, Mangas, ...)</a>
                 </li>
                 <li class="list-group-item">
                     <a href="{% url 'schema-swagger-ui' %}">Documentation de l'API</a>

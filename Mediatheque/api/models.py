@@ -17,6 +17,7 @@ class Auteur(models.Model):
 class Tag(models.Model):
     tag = models.CharField(max_length=100)
     nsfw = models.BooleanField()
+    modifiable = models.BooleanField()
 
     def __str__(self):
         return self.tag
@@ -33,8 +34,8 @@ class Livre(models.Model):
     nom = models.CharField(max_length=100)
     date_sortie = models.DateField()
     nombre_pages = models.IntegerField()
-    isbn = models.CharField(max_length=100, unique=True)
-    image = models.ImageField(upload_to="images/livres", default="default.png", blank=True)
+    isbn = models.CharField(max_length=100, unique=True, blank=True, null=True)
+    image = models.ImageField(upload_to="livres", default="default.png", blank=True)
 
     serie = models.ForeignKey(Serie, on_delete=models.CASCADE, null=True, blank=True)
     auteurs = models.ManyToManyField(Auteur)

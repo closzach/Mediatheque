@@ -12,6 +12,7 @@
         {% block metas %}
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% endblock %}
+        <link rel="icon" href="{% static 'icons/book.svg' %}" type="image/svg+xml">
         <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
         {% block styles %}
         {% endblock %}
@@ -25,9 +26,6 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'livres:accueil' %}">Accueil Livres</a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'livres:rechercher' %}">Rechercher un livre</a>
                         </li>

@@ -64,6 +64,9 @@ class TagForm(forms.ModelForm):
             }),
             'nsfw': forms.CheckboxInput(attrs={
                 'class': 'form-check-input'
+            }),
+            'modifiable': forms.CheckboxInput(attrs={
+                'class': 'form-check-input'
             })
         }
 
