@@ -90,6 +90,13 @@ def modifier_auteur(request, id):
             return redirect('livres:detail_auteur', id=id)
     return render(request, 'auteurs/modifier_auteur.html', {'auteur': auteur, 'form': auteur_form})
 
+def supprimer_auteur(request, id):
+    if request.method == "POST":
+        auteur = get_object_or_404(Auteur, id=id)
+        auteur.delete()
+        return redirect('livres:liste_auteurs')
+    return redirect(reverse('livres:detail_auteur', args=[id]))
+
 def creer_tag(request):
     if request.method == 'POST':
         tag_form = TagForm(request.POST)
