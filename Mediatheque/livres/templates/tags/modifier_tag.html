@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}{{ tag.tag }}{% endblock %}
+{% block content %}
+<h1>Modification de {{ tag.tag }}</h1>
+<form method="POST" class="container">
+    {% csrf_token %}
+    {{ form }}
+    <input class="btn btn-primary" type="submit" value="Enregistrer">
+</form>
+{% endblock %}

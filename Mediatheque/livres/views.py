@@ -32,9 +32,9 @@ def creer_livre(request):
 
 def modifier_livre(request, id):
     livre = get_object_or_404(Livre, id=id)
-    livre_form = AuteurForm(instance=livre)
+    livre_form = LivreForm(instance=livre)
     if request.method == 'POST':
-        livre_form = AuteurForm(request.POST, instance=livre)
+        livre_form = LivreForm(request.POST, instance=livre)
         if livre_form.has_changed() and livre_form.is_valid():
             livre_form.save()
             return redirect('livres:detail_livre', id=id)
@@ -81,7 +81,21 @@ def creer_tag(request):
         tag_form = TagForm(request.POST)
         if tag_form.is_valid():
             tag_form.save()
-            return redirect('livres:rechercher')
+            return redirect('livres:liste_tags')
     else:
         tag_form = TagForm()
     return render(request, 'tags/creer_tag.html', {'form': tag_form})
+
+def lister_tags(request):
+    tags = Tag.objects.all()
+    return render(request, 'tags/liste_tags.html', {'tags': tags})
+
+def modifier_tag(request, id):
+    tag = get_object_or_404(Tag, id=id)
+    tag_form = TagForm(instance=tag)
+    if request.method == 'POST':
+        tag_form = TagForm(request.POST, instance=tag)
+        if tag_form.has_changed() and tag_form.is_valid():
+            tag_form.save()
+            return redirect('livres:liste_tags')
+    return render(request, 'auteurs/modifier_auteur.html', {'tag': tag, 'form': tag_form})

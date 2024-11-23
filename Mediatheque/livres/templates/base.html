@@ -14,6 +14,7 @@
         {% endblock %}
         <link rel="icon" href="{% static 'icons/book.svg' %}" type="image/svg+xml">
         <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
+        <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
         {% block styles %}
         {% endblock %}
     </head>
@@ -33,16 +34,24 @@
                             <a class="nav-link" href="">Ma bibliothèque</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'livres:creer_livre' %}">Créer un livre</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'livres:creer_auteur' %}">Créer un auteur</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="{% url 'livres:liste_auteurs' %}">Auteurs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'livres:creer_tag' %}">Créer tag</a>
+                            <a class="nav-link" href="{% url 'livres:liste_tags' %}">Tags</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Créer</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'livres:creer_livre' %}">Livre</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'livres:creer_auteur' %}">Auteur</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'livres:creer_tag' %}">Tag</a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
