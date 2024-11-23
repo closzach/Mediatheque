@@ -73,6 +73,7 @@ class TagForm(forms.ModelForm):
 class SearchForm(forms.Form):
     recherche = forms.CharField(
         max_length=100,
+        required=False,
         widget=forms.TextInput(attrs={
             'class':'form-control',
             'placeholder':'Rechercher',

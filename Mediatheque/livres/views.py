@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from .forms import LivreForm, AuteurForm, TagForm, SearchForm
 from api.models import Livre, Auteur, Tag
 
@@ -9,7 +10,10 @@ def lister_livres(request):
         search_form = SearchForm(request.POST)
         if search_form.is_valid():
             recherche = search_form.cleaned_data['recherche']
-            livres = Livre.objects.filter(nom__icontains=recherche).prefetch_related('auteurs')
+            if recherche == "":
+                livres = Livre.objects.all()
+            else:
+                livres = Livre.objects.filter(nom__icontains=recherche).prefetch_related('auteurs')
     else:
         search_form = SearchForm()
     return render(request, 'livres/liste_livres.html', {'livres': livres, 'tags': tags, 'search_form': search_form})
@@ -40,13 +44,23 @@ def modifier_livre(request, id):
             return redirect('livres:detail_livre', id=id)
     return render(request, 'livres/modifier_livre.html', {'livre': livre, 'form': livre_form})
 
+def supprimer_livre(request, id):
+    if request.method == "POST":
+        livre = get_object_or_404(Livre, id=id)
+        livre.delete()
+        return redirect('livres:rechercher')
+    return redirect(reverse('livres:detail_livre', args=[id]))
+
 def liste_auteurs(request):
     auteurs = Auteur.objects.all()
     if request.method == 'POST':
         search_form = SearchForm(request.POST)
         if search_form.is_valid():
             recherche = search_form.cleaned_data['recherche']
-            auteurs = Auteur.objects.filter(nom__icontains=recherche)
+            if recherche == "":
+                auteurs = Auteur.objects.all()
+            else:
+                auteurs = Auteur.objects.filter(nom__icontains=recherche)
     else:
         search_form = SearchForm()
     return render(request, 'auteurs/liste_auteurs.html', {'auteurs': auteurs, 'search_form': search_form})
@@ -88,7 +102,17 @@ def creer_tag(request):
 
 def lister_tags(request):
     tags = Tag.objects.all()
-    return render(request, 'tags/liste_tags.html', {'tags': tags})
+    if request.method == 'POST':
+        search_form = SearchForm(request.POST)
+        if search_form.is_valid():
+            recherche = search_form.cleaned_data['recherche']
+            if recherche == "":
+                tags = Tag.objects.all()
+            else:
+                tags = Tag.objects.filter(tag__icontains=recherche)
+    else:
+        search_form = SearchForm()
+    return render(request, 'tags/liste_tags.html', {'tags': tags, 'search_form': search_form})
 
 def modifier_tag(request, id):
     tag = get_object_or_404(Tag, id=id)

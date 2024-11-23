@@ -8,6 +8,7 @@ urlpatterns = [
     path('creer_livre/', creer_livre, name='creer_livre'),
     path('detail_livre/<int:id>/', detail_livre, name='detail_livre'),
     path('modifier_livre/<int:id>/', modifier_livre, name='modifier_livre'),
+    path('supprimer_livre/<int:id>/', supprimer_livre, name='supprimer_livre'),
     path('creer_auteur/', creer_auteur, name='creer_auteur'),
     path('detail_auteur/<int:id>/', detail_auteur, name='detail_auteur'),
     path('liste_auteurs/', liste_auteurs, name='liste_auteurs'),
