@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.core.exceptions import PermissionDenied
 from .forms import LivreForm, AuteurForm, TagForm, SearchForm
 from api.models import Livre, Auteur, Tag
 
@@ -125,8 +126,18 @@ def modifier_tag(request, id):
     tag = get_object_or_404(Tag, id=id)
     tag_form = TagForm(instance=tag)
     if request.method == 'POST':
+        if not tag.modifiable:
+            raise PermissionDenied("Ce tag ne peut être modifié.")
         tag_form = TagForm(request.POST, instance=tag)
         if tag_form.has_changed() and tag_form.is_valid():
             tag_form.save()
             return redirect('livres:liste_tags')
     return render(request, 'auteurs/modifier_auteur.html', {'tag': tag, 'form': tag_form})
+
+def supprimer_tag(request, id):
+    if request.method == "POST":
+        tag = get_object_or_404(Tag, id=id)
+        if not tag.modifiable:
+            raise PermissionDenied("Ce tag ne peut être supprimé.")
+        tag.delete()
+    return redirect('livres:liste_tags')

@@ -17,4 +17,5 @@ urlpatterns = [
     path('creer_tag/', creer_tag, name='creer_tag'),
     path('liste_tags/', lister_tags, name='liste_tags'),
     path('modifier_tag/<int:id>', modifier_tag, name='modifier_tag'),
+    path('supprimer_tag/<int:id>', supprimer_tag, name='supprimer_tag'),
 ]
