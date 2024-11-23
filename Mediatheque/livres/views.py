@@ -135,9 +135,10 @@ def modifier_tag(request, id):
     return render(request, 'auteurs/modifier_auteur.html', {'tag': tag, 'form': tag_form})
 
 def supprimer_tag(request, id):
-    if request.method == "POST":
-        tag = get_object_or_404(Tag, id=id)
-        if not tag.modifiable:
-            raise PermissionDenied("Ce tag ne peut être supprimé.")
-        tag.delete()
+    tag = get_object_or_404(Tag, id=id)
+
+    if not tag.modifiable:
+        raise PermissionDenied("Ce tag ne peut être supprimé.")
+
+    tag.delete()
     return redirect('livres:liste_tags')
