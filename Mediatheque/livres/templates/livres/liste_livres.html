@@ -6,67 +6,64 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-    <form class="input-group mb-3" method="POST">
-        {% csrf_token %}
-        {{ search_form.recherche }}
-        <button class="btn btn-outline-secondary" id="search-button" type="submit">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-            </svg>
-        </button>
-        <div class="container mt-3 d-flex gap-4">
-            <div class="tags-section">
-                <label class="form-label">Tags :</label>
-                <div class="d-flex flex-wrap gap-2">
-                    {% for tag in search_form.tags.field.choices %}
-                    <div class="form-check form-switch">
-                        <input type="checkbox" class="btn-check" id="tag_{{ forloop.counter }}" name="tags" value="{{ tag.0 }}">
-                        <label class="btn btn-outline-primary" for="tag_{{ tag.0 }}">
-                            {{ tag.1 }}
-                        </label>
+    <div class="search-section p-4 mb-5 rounded shadow">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ search_form.recherche }}
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="form-label">Tags :</label>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for tag in search_form.tags.field.choices %}
+                        <div class="form-check form-switch">
+                            <input type="checkbox" class="btn-check" id="tag_{{ forloop.counter }}" name="tags" value="{{ tag.0 }}">
+                            <label class="btn btn-outline-primary" for="tag_{{ tag.0 }}">
+                                {{ tag.1 }}
+                            </label>
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Auteur :</label>
+                    {{ search_form.auteur }}
                 </div>
             </div>
-            <div class="auteurs-section">
-                <label class="form-label" for="id_auteur">Auteur :</label>
-                {{ search_form.auteur }}
+            <div class="mt-3">
+                <button class="btn btn-primary" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                    </svg> Rechercher
+                </button>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 <div class="container">
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Titre</th>
-                <th scope="col">Date de sortie</th>
-                <th scope="col">Auteur(s)</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for livre in livres %}
-                <a href="{% url 'livres:detail_livre' livre.id %}">
-                    <tr class="clickable-row" data-href="{% url 'livres:detail_livre' livre.id %}">
-                        <td>{{ livre.nom }}</td>
-                        <td>{{ livre.date_sortie }}</td>
-                        <td>{{ livre.auteurs.all|join:", " }}</td>
-                    </tr>
-                </a>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for livre in livres %}
+        <div class="col">
+            <div class="card h-100">
+                {% if livre.image %}
+                <img src="{{ livre.image.url }}" class="card-img-top" alt="{{ livre.nom }}">
+                {% else %}
+                <img src="{% static 'images/default-book-cover.jpg' %}" class="card-img-top" alt="Image non disponible">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ livre.nom }}</h5>
+                    <p class="card-text">
+                        <strong>Date de sortie :</strong> {{ livre.date_sortie }}<br>
+                        <strong>Auteur(s) :</strong> {{ livre.auteurs.all|join:", " }}
+                    </p>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{% url 'livres:detail_livre' livre.id %}" class="btn btn-primary">Voir les détails</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
-{% endblock %}
-{% block scripts %}
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const rows = document.querySelectorAll('.clickable-row');
-        rows.forEach(row => {
-            row.addEventListener('click', function () {
-                window.location.href = this.dataset.href;
-            });
-        });
-    });
-    </script>
 {% endblock %}

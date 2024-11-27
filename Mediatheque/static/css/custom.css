@@ -18,3 +18,53 @@
     max-width: 250px;
 }
 
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.card-footer {
+    background-color: #f8f9fa;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.search-section {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+}
+
+.search-section h3 {
+    color: #333;
+    font-weight: bold;
+}
+
+.search-section .form-label {
+    font-weight: 600;
+}
+
+.search-section button {
+    width: 100%;
+}
+
+.search-section .d-flex {
+    align-items: center;
+    gap: 10px;
+}
+
