@@ -14,19 +14,25 @@
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
             </svg>
         </button>
-        <div class="container mt-3">
-            <label class="form-label">Tags :</label>
-            <div class="d-flex flex-wrap gap-2">
-                {% for tag in search_form.tags.field.choices %}
-                <div class="form-check form-switch">
-                    <input type="checkbox" class="btn-check" id="tag_{{ forloop.counter }}" name="tags" value="{{ tag.0 }}">
-                    <label class="btn btn-outline-primary" for="tag_{{ tag.0 }}">
-                        {{ tag.1 }}
-                    </label>
+        <div class="container mt-3 d-flex gap-4">
+            <div class="tags-section">
+                <label class="form-label">Tags :</label>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for tag in search_form.tags.field.choices %}
+                    <div class="form-check form-switch">
+                        <input type="checkbox" class="btn-check" id="tag_{{ forloop.counter }}" name="tags" value="{{ tag.0 }}">
+                        <label class="btn btn-outline-primary" for="tag_{{ tag.0 }}">
+                            {{ tag.1 }}
+                        </label>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
-        </div>        
+            <div class="auteurs-section">
+                <label class="form-label" for="id_auteur">Auteur :</label>
+                {{ search_form.auteur }}
+            </div>
+        </div>
     </form>
 </div>
 <div class="container">

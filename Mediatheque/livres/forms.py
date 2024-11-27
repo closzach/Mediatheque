@@ -102,3 +102,10 @@ class SearchLivreForm(forms.Form):
             }
         )
     )
+    auteur = forms.ModelChoiceField(
+        queryset=Auteur.objects.all(),
+        required=False,
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+        })
+    )

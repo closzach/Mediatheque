@@ -12,8 +12,7 @@ def lister_livres(request):
         if search_form.is_valid():
             recherche = search_form.cleaned_data['recherche']
             tags_recherche = search_form.cleaned_data['tags']
-            print(tags_recherche)
-            print(len(tags_recherche))
+            auteur_recherche = search_form.cleaned_data['auteur']
             if recherche == "":
                 livres = Livre.objects.all()
             else:
@@ -21,6 +20,8 @@ def lister_livres(request):
             if len(tags_recherche)>0:
                 for tag_recherche in tags_recherche:
                     livres = livres.filter(tags__id=tag_recherche.id).distinct()
+            if auteur_recherche:
+                livres = livres.filter(auteurs__id=auteur_recherche.id)
     else:
         search_form = SearchLivreForm()
     return render(request, 'livres/liste_livres.html', {'livres': livres, 'tags': tags, 'search_form': search_form})
