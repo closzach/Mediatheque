@@ -81,3 +81,24 @@ class SearchForm(forms.Form):
             'aria-describedby': 'search-button'
         })
     )
+
+class SearchLivreForm(forms.Form):
+    recherche = forms.CharField(
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class':'form-control',
+            'placeholder':'Rechercher',
+            'aria-label': 'Rechercher',
+            'aria-describedby': 'search-button'
+        })
+    )
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        required=False,
+        widget=forms.CheckboxSelectMultiple(
+            attrs={
+                'class': 'form-check-input'
+            }
+        )
+    )

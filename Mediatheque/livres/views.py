@@ -1,22 +1,28 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.core.exceptions import PermissionDenied
-from .forms import LivreForm, AuteurForm, TagForm, SearchForm
+from .forms import LivreForm, AuteurForm, TagForm, SearchForm, SearchLivreForm
 from api.models import Livre, Auteur, Tag
 
 def lister_livres(request):
     livres = Livre.objects.prefetch_related('auteurs')
     tags = Tag.objects.all()
     if request.method == 'POST':
-        search_form = SearchForm(request.POST)
+        search_form = SearchLivreForm(request.POST)
         if search_form.is_valid():
             recherche = search_form.cleaned_data['recherche']
+            tags_recherche = search_form.cleaned_data['tags']
+            print(tags_recherche)
+            print(len(tags_recherche))
             if recherche == "":
                 livres = Livre.objects.all()
             else:
                 livres = Livre.objects.filter(nom__icontains=recherche).prefetch_related('auteurs')
+            if len(tags_recherche)>0:
+                for tag_recherche in tags_recherche:
+                    livres = livres.filter(tags__id=tag_recherche.id).distinct()
     else:
-        search_form = SearchForm()
+        search_form = SearchLivreForm()
     return render(request, 'livres/liste_livres.html', {'livres': livres, 'tags': tags, 'search_form': search_form})
 
 def detail_livre(request, id):
