@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 import os
 from django.utils.timezone import now
 from PIL import Image
@@ -25,14 +26,12 @@ class Tag(models.Model):
     def __str__(self):
         return self.tag
 
-class Lecteur(models.Model):
-    nom = models.CharField(max_length=100)
-    mdp = models.CharField(max_length=255)
+class Lecteur(AbstractUser):
     date_naissance = models.DateField()
 
     def __str__(self):
         return self.nom
-    
+
 def renommer_image(instance, filename):
         extension = os.path.splitext(filename)[1]
         nouveau_nom = f"{instance.id}_{instance.nom}_{now().strftime('%Y%m%d%H%M%S')}{extension}"

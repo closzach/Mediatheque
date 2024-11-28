@@ -1,6 +1,7 @@
 from random import randint
 from django.db.models import Max
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .forms import LecteurForm
 from api.models import Livre
 
 def hub(request):
@@ -11,3 +12,13 @@ def hub(request):
     else:
         livre = None
     return render(request, 'hub.html', {'livre': livre})
+
+def signup(request):
+    if request.method == 'POST':
+        form = LecteurForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = LecteurForm()
+    return render(request, 'auth/signup.html', {'form': form})

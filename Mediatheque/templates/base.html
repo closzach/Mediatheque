@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            {% block title %}{% endblock %}
+        </title>
+        {% block metas %}
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        {% endblock %}
+        <link rel="icon" href="{% static 'icons/house.svg' %}" type="image/svg+xml">
+        <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
+        <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+        {% block styles %}
+        {% endblock %}
+    </head>
+    <body>
+        <header class="navbar navbar-dark bg-dark navbar-expand-lg" style="margin-bottom: 1em; padding-left: 1em;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'hub' %}">
+                    <img src="{% static 'icons/house.svg' %}" alt="Logo" width="30" height="30" class="d-inline-block align-top">
+                    Médiathèque
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">{{ user.username }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-danger">Déconnexion</button>
+                                </form>
+                                
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="btn btn-outline-primary me-2" href="{% url 'login' %}">Connexion</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-primary" href="{% url 'signup' %}">Inscription</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <main class="container my-5">
+            {% block content %}
+            {% endblock %}
+        </main>
+        {% block scripts %}
+        {% endblock %}
+    </body>
+</html>
