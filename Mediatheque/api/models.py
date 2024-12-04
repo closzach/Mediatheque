@@ -64,8 +64,8 @@ class Lecture(models.Model):
     date_fin = models.DateField(null=True, blank=True)
     statut = models.CharField(max_length=20)
 
-    livre = models.ForeignKey(Livre, on_delete=models.CASCADE)
-    lecteur = models.ForeignKey(Lecteur, on_delete=models.CASCADE)
+    livre = models.ForeignKey(Livre)
+    lecteur = models.ForeignKey(Lecteur)
 
     class Meta:
         constraints = [
