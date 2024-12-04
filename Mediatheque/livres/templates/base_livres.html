@@ -29,12 +29,12 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'livres:rechercher' %}">Rechercher un livre</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="">Ma bibliothèque</a>
+                            <a class="nav-link" href="{% url 'livres:bibliotheque' %}">Ma bibliothèque</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'livres:liste_auteurs' %}">Auteurs</a>
@@ -57,7 +57,27 @@
                             </ul>
                         </li>
                     </ul>
-                </div>
+                    <ul class="navbar-nav ms-auto">
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">{{ user.username }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-danger">Déconnexion</button>
+                                </form>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="btn btn-outline-primary me-2" href="{% url 'login' %}">Connexion</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-primary" href="{% url 'signup' %}">Inscription</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>                
             </nav>            
         </header>
         <main>

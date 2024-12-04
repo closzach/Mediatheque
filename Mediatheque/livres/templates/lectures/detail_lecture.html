@@ -1,0 +1,80 @@
+{% extends 'base_livres.html' %}
+{% load static %}
+
+{% block title %}Détail de la lecture : {{ lecture.livre.nom }}{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-4">
+            {% if lecture.livre.image %}
+            <img src="{{ lecture.livre.image.url }}" class="img-fluid rounded shadow" alt="Image de {{ lecture.livre.nom }}">
+            {% else %}
+            <div class="d-flex align-items-center justify-content-center bg-light rounded shadow" style="height: 300px;">
+                <em class="text-muted">Aucune image disponible</em>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-lg-8">
+            <h1 class="mb-4">{{ lecture.livre.nom }}</h1>
+            <p>
+                <strong>Auteur(s) :</strong> {{ lecture.livre.auteurs.all|join:", " }}
+            </p>
+            <p>
+                <strong>Statut de lecture :</strong> 
+                <span class="badge bg-primary">{{ lecture.statut|default:"Non spécifié" }}</span>
+            </p>
+            {% if lecture.date_debut %}
+            <p>
+                <strong>Date de début :</strong> {{ lecture.date_debut|date:"d/m/Y" }}
+            </p>
+            {% endif %}
+            {% if lecture.date_fin %}
+            <p>
+                <strong>Date de fin :</strong> {{ lecture.date_fin|date:"d/m/Y" }}
+            </p>
+            {% endif %}
+            <hr>
+            <h5>Résumé</h5>
+            {% if lecture.livre.description %}
+            <p>{{ lecture.livre.description }}</p>
+            {% else %}
+            <p class="text-muted">Aucun résumé disponible pour ce livre.</p>
+            {% endif %}
+            <div class="mt-4 d-flex gap-2">
+                <a href="{% url 'livres:detail_livre' lecture.livre.id %}" class="btn btn-outline-secondary">
+                    Voir les détails du livre
+                </a>
+                <a href="{% url 'livres:modifier_lecture' lecture.id %}" class="btn btn-warning">
+                    Modifier
+                </a>
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                    Supprimer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmation de suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Êtes-vous sûr de vouloir supprimer cette lecture ? Cette action est irréversible.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <a href="{% url 'livres:supprimer_lecture' lecture.id %}" class="btn btn-danger">Supprimer</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base_livres.html' %}
+{% load static %}
+
+{% block title %}Ma bibliothèque{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="search-section p-4 mb-5 rounded shadow">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row g-3">
+                <!-- Barre de recherche -->
+                <div class="col-md-8">
+                    {{ search_form.recherche }}
+                </div>
+                <!-- Sélection du statut -->
+                <div class="col-md-4">
+                    {{ search_form.statut }}
+                </div>
+            </div>
+            <div class="mt-3 text-end">
+                <button class="btn btn-primary" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                    </svg> Rechercher
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for lecture in lectures %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ lecture.livre.nom }}</h5>
+                    <p class="card-text">
+                        <strong>Auteur(s) :</strong> {{ lecture.livre.auteurs.all|join:", " }}<br>
+                        <strong>Statut :</strong> {{ lecture.statut|default:"Non spécifié" }}<br>
+                        {% if lecture.date_debut %}
+                        <strong>Début :</strong> {{ lecture.date_debut|date:"d/m/Y" }}<br>
+                        {% endif %}
+                        {% if lecture.date_fin %}
+                        <strong>Fin :</strong> {{ lecture.date_fin|date:"d/m/Y" }}<br>
+                        {% endif %}
+                    </p>
+                </div>
+                {% if lecture.livre.image %}
+                <img src="{{ lecture.livre.image.url }}" class="card-img-top" alt="Image du livre">
+                {% else %}
+                <div class="card-img-top text-center p-4 bg-light text-muted">
+                    <em>Aucune image disponible</em>
+                </div>
+                {% endif %}
+                <div class="card-footer text-end">
+                    <a href="{% url 'livres:detail_lecture' lecture.id %}" class="btn btn-primary btn-sm">
+                        Voir les détails
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col">
+            <p class="text-muted">Aucun livre dans votre bibliothèque pour l'instant.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

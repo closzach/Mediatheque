@@ -68,3 +68,11 @@
     gap: 10px;
 }
 
+.img-fluid {
+    max-height: 400px;
+    object-fit: cover;
+}
+.shadow {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+

@@ -56,6 +56,9 @@
                             </div>
                         </div>
                         <div class="card-footer text-center">
+                            {% if bouton_ajouter %}
+                            <a href="{% url 'livres:ajouter_livre' livre.id %}" class="btn btn-outline-primary">Ajouter à la collection</a>
+                            {% endif %}
                             <a href="{% url 'livres:rechercher' %}" class="btn btn-outline-primary">Retour à la liste des livres</a>
                         </div>
                     </div>

@@ -30,7 +30,7 @@ class Lecteur(AbstractUser):
     date_naissance = models.DateField()
 
     def __str__(self):
-        return self.nom
+        return self.username
 
 def renommer_image(instance, filename):
         extension = os.path.splitext(filename)[1]
@@ -66,3 +66,8 @@ class Lecture(models.Model):
 
     livre = models.ForeignKey(Livre, on_delete=models.CASCADE)
     lecteur = models.ForeignKey(Lecteur, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['livre', 'lecteur'], name='unique_livre_lecteur')
+        ]

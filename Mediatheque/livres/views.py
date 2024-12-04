@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.core.exceptions import PermissionDenied
-from .forms import LivreForm, AuteurForm, TagForm, SearchForm, SearchLivreForm
-from api.models import Livre, Auteur, Tag
+from .forms import LivreForm, AuteurForm, TagForm, SearchForm, SearchLivreForm, SearchLectureForm, LectureForm
+from api.models import Livre, Auteur, Tag, Lecture
+from django.contrib.auth.decorators import login_required
 
 def lister_livres(request):
     livres = Livre.objects.prefetch_related('auteurs')
@@ -30,7 +31,13 @@ def detail_livre(request, id):
     livre = get_object_or_404(Livre, id=id)
     auteurs = Auteur.objects.filter(livre=livre)
     tags = Tag.objects.filter(livre=livre)
-    return render(request, 'livres/detail_livre.html', {'livre': livre, 'auteurs': auteurs, 'tags': tags})
+    bouton_ajouter = True
+    lecture = None
+    if request.user.is_authenticated:
+        if len(Lecture.objects.filter(lecteur=request.user, livre=livre))!=0:
+            lecture = Lecture.objects.filter(lecteur=request.user, livre=livre)
+            bouton_ajouter = False
+    return render(request, 'livres/detail_livre.html', {'livre': livre, 'auteurs': auteurs, 'tags': tags, 'bouton_ajouter': bouton_ajouter, 'lecture': lecture})
 
 def creer_livre(request):
     if request.method == 'POST':
@@ -149,3 +156,63 @@ def supprimer_tag(request, id):
 
     tag.delete()
     return redirect('livres:liste_tags')
+
+@login_required
+def bibliotheque(request):
+    lectures = Lecture.objects.filter(lecteur=request.user)
+    if request.method == 'POST':
+        search_form = SearchLectureForm(request.POST)
+        if search_form.is_valid():
+            recherche = search_form.cleaned_data['recherche']
+            statut = search_form.cleaned_data['statut']
+            if recherche != "":
+                lectures = lectures.filter(livre__nom__icontains=recherche)
+            if statut != "":
+                lectures = lectures.filter(statut=statut)
+    else:
+        search_form = SearchLectureForm()
+    return render(request, 'lectures/bibliotheque.html', {'lectures': lectures, 'search_form': search_form})
+
+@login_required
+def ajouter_livre(request, id):
+    livre = get_object_or_404(Livre, id=id)
+    lecteur = request.user
+    lecture = Lecture(
+        statut="a lire",
+        livre=livre,
+        lecteur=lecteur
+    )
+    try:
+        lecture.save()
+    except:
+        raise PermissionDenied(f"Impossible d'ajouer une nouvelle fois le livre {livre} pour {lecteur}.")
+    return redirect('livres:detail_livre', id=id)
+
+@login_required
+def supprimer_lecture(request, id):
+    lecture = get_object_or_404(Lecture, id=id)
+
+    if lecture.lecteur != request.user:
+        raise PermissionDenied(f"{request.user} ne peut pas supprimer la lecture de {lecture.lecteur}.")
+
+    lecture.delete()
+    return redirect('livres:bibliotheque')
+
+@login_required
+def detail_lecture(request, id):
+    lecture = get_object_or_404(Lecture, id=id)
+
+    if lecture.lecteur != request.user:
+        raise PermissionDenied(f"Cette lecture n'appartient pas à {{request.user}}.")
+
+    return render(request, 'lectures/detail_lecture.html', {'lecture': lecture})
+
+def modifier_lecture(request, id):
+    lecture = get_object_or_404(Lecture, id=id)
+    lecture_form = LectureForm(instance=lecture)
+    if request.method == 'POST':
+        lecture_form = LectureForm(request.POST, instance=lecture)
+        if lecture_form.has_changed() and lecture_form.is_valid():
+            lecture_form.save()
+            return redirect('livres:detail_lecture', id=lecture.id)
+    return render(request, 'lectures/modifier_lecture.html', {'lecture': lecture, 'form': lecture_form})
