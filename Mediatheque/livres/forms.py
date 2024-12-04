@@ -140,7 +140,7 @@ class SearchLectureForm(forms.Form):
 class LectureForm(forms.ModelForm):
     class Meta:
         model = Lecture
-        fields = ['date_debut', 'date_fin', 'statut']
+        fields = ['date_debut', 'date_fin', 'statut', 'note']
         widgets = {
             'date_debut': forms.DateInput(
                 attrs={
@@ -159,11 +159,17 @@ class LectureForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
+            'note': forms.Select(
+                attrs={
+                    'class': 'form-control'
+                }
+            )
         }
         labels = {
             'date_debut': 'Date de début',
             'date_fin': 'Date de fin',
             'statut': 'Statut de lecture',
+            'note': 'Note',
         }
 
     STATUT_CHOICES = [

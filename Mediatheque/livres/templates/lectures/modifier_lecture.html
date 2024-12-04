@@ -24,16 +24,20 @@
             <form method="POST">
                 {% csrf_token %}
                 <div class="mb-3">
-                    {{ form.date_debut.label_tag }}<br>
+                    {{ form.date_debut.label_tag }}
                     {{ form.date_debut }}
                 </div>
                 <div class="mb-3">
-                    {{ form.date_fin.label_tag }}<br>
+                    {{ form.date_fin.label_tag }}
                     {{ form.date_fin }}
                 </div>
                 <div class="mb-3">
-                    {{ form.statut.label_tag }}<br>
+                    {{ form.statut.label_tag }}
                     {{ form.statut }}
+                </div>
+                <div class="mb-3">
+                    {{ form.note.label }}
+                    {{ form.note }}
                 </div>
                 <div class="mt-3 d-flex gap-2">
                     <button type="submit" class="btn btn-primary">

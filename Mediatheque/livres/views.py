@@ -201,11 +201,13 @@ def supprimer_lecture(request, id):
 @login_required
 def detail_lecture(request, id):
     lecture = get_object_or_404(Lecture, id=id)
+    lecture_range = range(1, 6)
+    print(lecture_range)
 
     if lecture.lecteur != request.user:
         raise PermissionDenied(f"Cette lecture n'appartient pas à {{request.user}}.")
 
-    return render(request, 'lectures/detail_lecture.html', {'lecture': lecture})
+    return render(request, 'lectures/detail_lecture.html', {'lecture': lecture, 'lecture_range': lecture_range})
 
 def modifier_lecture(request, id):
     lecture = get_object_or_404(Lecture, id=id)

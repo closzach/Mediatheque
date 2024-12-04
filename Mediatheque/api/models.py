@@ -63,6 +63,12 @@ class Lecture(models.Model):
     date_debut = models.DateField(null=True, blank=True)
     date_fin = models.DateField(null=True, blank=True)
     statut = models.CharField(max_length=20)
+    note = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        choices=[(i, f"{i}") for i in range(1, 6)],
+        verbose_name="Note"
+    )
 
     livre = models.ForeignKey(Livre, on_delete=models.PROTECT)
     lecteur = models.ForeignKey(Lecteur, on_delete=models.PROTECT)
