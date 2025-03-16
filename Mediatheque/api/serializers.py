@@ -1,11 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 from .models import *
 
-class SerieSerializer(ModelSerializer):
-    class Meta:
-        model = Serie
-        fields = '__all__'
-
 class AuteurSerializer(ModelSerializer):
     class Meta:
         model = Auteur
@@ -22,7 +17,6 @@ class LecteurSerializer(ModelSerializer):
         fields = '__all__'
 
 class LivreSerializer(ModelSerializer):
-    serie = SerieSerializer(read_only=True)
     auteurs = AuteurSerializer(many=True, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
 

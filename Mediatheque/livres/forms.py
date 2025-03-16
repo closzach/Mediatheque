@@ -23,9 +23,6 @@ class LivreForm(forms.ModelForm):
             'image': forms.FileInput(attrs={
                 'class': 'form-control'
             }),
-            'serie': forms.Select(attrs={
-                'class': 'form-control'
-            }),
             'auteurs': forms.SelectMultiple(attrs={
                 'class': 'form-control'
             }),

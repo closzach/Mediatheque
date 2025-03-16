@@ -2,10 +2,6 @@ from rest_framework.viewsets import ModelViewSet
 from .models import *
 from .serializers import *
 
-class SerieViewSet(ModelViewSet):
-    queryset = Serie.objects.all()
-    serializer_class = SerieSerializer
-
 class AuteurViewSet(ModelViewSet):
     queryset = Auteur.objects.all()
     serializer_class = AuteurSerializer

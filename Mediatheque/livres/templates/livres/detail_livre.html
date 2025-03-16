@@ -33,10 +33,6 @@
                             <p class="text-muted"><strong>Nombre de pages :</strong> {{ livre.nombre_pages }}</p>
                             <p class="text-muted"><strong>ISBN :</strong> {{ livre.isbn }}</p>
 
-                            {% if livre.serie %}
-                            <p><strong>Série :</strong> {{ livre.serie.nom }}</p>
-                            {% endif %}
-
                             <div class="mt-4">
                                 <h5>Auteurs :</h5>
                                 <ul class="list-group list-group-flush">

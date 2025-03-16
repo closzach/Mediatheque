@@ -3,7 +3,6 @@ from .views import *
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register('series', SerieViewSet)
 router.register('auteurs', AuteurViewSet)
 router.register('tags', TagViewSet)
 router.register('lecteurs', LecteurViewSet)
