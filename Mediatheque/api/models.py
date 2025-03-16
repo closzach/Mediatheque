@@ -4,12 +4,6 @@ import os
 from django.utils.timezone import now
 from PIL import Image
 
-class Serie(models.Model):
-    nom = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.nom
-
 class Auteur(models.Model):
     nom = models.CharField(max_length=100)
     date_naissance = models.DateField(null=True, blank=True)
@@ -43,7 +37,6 @@ class Livre(models.Model):
     isbn = models.CharField(max_length=100, unique=True, blank=True, null=True)
     image = models.ImageField(upload_to=renommer_image, default="default.png", blank=True)
 
-    serie = models.ForeignKey(Serie, on_delete=models.CASCADE, null=True, blank=True)
     auteurs = models.ManyToManyField(Auteur)
     tags = models.ManyToManyField(Tag)
 
