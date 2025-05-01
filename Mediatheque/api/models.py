@@ -30,6 +30,7 @@ def renommer_image(instance, filename):
         extension = os.path.splitext(filename)[1]
         nouveau_nom = f"{instance.id}_{instance.nom}_{now().strftime('%Y%m%d%H%M%S')}{extension}"
         return os.path.join("livres", nouveau_nom)
+
 class Livre(models.Model):
     nom = models.CharField(max_length=100)
     date_sortie = models.DateField()
