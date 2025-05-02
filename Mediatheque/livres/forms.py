@@ -2,6 +2,18 @@ from django import forms
 from api.models import Livre, Auteur, Tag, Lecture
 
 class LivreForm(forms.ModelForm):
+    auteurs = forms.ModelMultipleChoiceField(
+        queryset=Auteur.objects.all(),
+        widget=forms.CheckboxSelectMultiple(),
+        required=True
+    )
+
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        widget=forms.CheckboxSelectMultiple(),
+        required=True
+    )
+
     class Meta:
         model = Livre
         fields = '__all__'
@@ -21,12 +33,6 @@ class LivreForm(forms.ModelForm):
                 'class': 'form-control'
             }),
             'image': forms.FileInput(attrs={
-                'class': 'form-control'
-            }),
-            'auteurs': forms.SelectMultiple(attrs={
-                'class': 'form-control'
-            }),
-            'tags': forms.SelectMultiple(attrs={
                 'class': 'form-control'
             })
         }
