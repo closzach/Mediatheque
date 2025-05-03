@@ -53,7 +53,7 @@ def modifier_livre(request, id):
     livre = get_object_or_404(Livre, id=id)
     livre_form = LivreForm(instance=livre)
     if request.method == 'POST':
-        livre_form = LivreForm(request.POST, instance=livre)
+        livre_form = LivreForm(request.POST, request.FILES, instance=livre)
         if livre_form.has_changed() and livre_form.is_valid():
             livre_form.save()
             return redirect('livres:detail_livre', id=id)
