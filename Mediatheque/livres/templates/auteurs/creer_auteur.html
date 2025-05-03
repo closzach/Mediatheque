@@ -4,7 +4,7 @@
 <h1>Créer un nouvel auteur</h1>
 <form method="POST" class="container">
     {% csrf_token %}
-    {{ form }}
+    {{ form.as_p }}
     <input class="btn btn-primary" type="submit" value="Enregistrer">
 </form>
 {% endblock %}

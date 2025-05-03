@@ -5,7 +5,7 @@ Site en Django voué à la gestion de sa bibliothèque et au suivi de ses lectur
 
 Cloner le dépôt :
 ```sh
-git clone https://github.com/closzach/Livres.git
+git clone https://github.com/closzach/Mediatheque.git
 ```
 
 Créer un environnement Python 3.12 et le lancer(facultatif) :
@@ -20,18 +20,25 @@ python -m pip install -r requirements.txt
 
 Faire les migrations de la base de données
 ```sh
-python python ./Livres/manage.py makemigrations && python ./Livres/manage.py migrate
+python python ./Mediatheque/manage.py makemigrations && python ./Mediatheque/manage.py migrate
 ```
 
 Lancer le serveur :
 ```sh
-python ./Livres/manage.py runserver
+python ./Mediatheque/manage.py runserver
 ```
 
 Après avoir fait l'installation et lancé avec une des méthodes, accèder au site avec l'url suivante :
 
 ```
 http://127.0.0.1:8000/
+```
+
+## Développement
+
+Lancer les tests de l'API
+```sh
+python ./Mediatheque/manage.py test
 ```
 
 ## Documentation d'API

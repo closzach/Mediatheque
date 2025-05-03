@@ -13,11 +13,9 @@
         <form method="POST">
             {% csrf_token %}
             <div class="row g-3">
-                <!-- Barre de recherche -->
                 <div class="col-md-8">
                     {{ search_form.recherche }}
                 </div>
-                <!-- Sélection du statut -->
                 <div class="col-md-4">
                     {{ search_form.statut }}
                 </div>
