@@ -37,6 +37,11 @@ class LivreForm(forms.ModelForm):
             })
         }
 
+    def __init__(self, *args, **kwargs):
+        super(LivreForm, self).__init__(*args, **kwargs)
+        if self.instance and self.instance.pk and self.instance.date_sortie:
+            self.initial['date_sortie'] = self.instance.date_sortie.strftime('%Y-%m-%d')
+
 class AuteurForm(forms.ModelForm):
     class Meta:
         model = Auteur
@@ -55,6 +60,13 @@ class AuteurForm(forms.ModelForm):
                 'type': 'date'
             })
         }
+
+    def __init__(self, *args, **kwargs):
+        super(AuteurForm, self).__init__(*args, **kwargs)
+        if self.instance and self.instance.pk and self.instance.date_naissance:
+            self.initial['date_naissance'] = self.instance.date_naissance.strftime('%Y-%m-%d')
+        if self.instance and self.instance.pk and self.instance.date_mort:
+            self.initial['date_mort'] = self.instance.date_mort.strftime('%Y-%m-%d')
 
 class TagForm(forms.ModelForm):
     class Meta:
@@ -174,6 +186,13 @@ class LectureForm(forms.ModelForm):
             'statut': 'Statut de lecture',
             'note': 'Note',
         }
+
+    def __init__(self, *args, **kwargs):
+        super(LectureForm, self).__init__(*args, **kwargs)
+        if self.instance and self.instance.pk and self.instance.date_debut:
+            self.initial['date_debut'] = self.instance.date_debut.strftime('%Y-%m-%d')
+        if self.instance and self.instance.pk and self.instance.date_fin:
+            self.initial['date_fin'] = self.instance.date_fin.strftime('%Y-%m-%d')
 
     STATUT_CHOICES = [
         ('a lire', 'À lire'),
