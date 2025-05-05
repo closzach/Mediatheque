@@ -4,10 +4,13 @@ from django.core.exceptions import PermissionDenied
 from .forms import LivreForm, AuteurForm, TagForm, SearchForm, SearchLivreForm, SearchLectureForm, LectureForm
 from api.models import Livre, Auteur, Tag, Lecture
 from django.contrib.auth.decorators import login_required
+from api.utils import est_majeur
 
 def lister_livres(request):
-    livres = Livre.objects.prefetch_related('auteurs')
-    tags = Tag.objects.all()
+    if request.user.is_authenticated and est_majeur(request.user):
+        livres = Livre.objects.prefetch_related('auteurs')
+    else:
+        livres = Livre.objects.exclude(tags__pour_adulte=True).prefetch_related('auteurs')
     if request.method == 'POST':
         search_form = SearchLivreForm(request.POST)
         if search_form.is_valid():
@@ -25,12 +28,14 @@ def lister_livres(request):
                 livres = livres.filter(auteurs__id=auteur_recherche.id)
     else:
         search_form = SearchLivreForm()
-    return render(request, 'livres/liste_livres.html', {'livres': livres, 'tags': tags, 'search_form': search_form})
+    return render(request, 'livres/liste_livres.html', {'livres': livres, 'search_form': search_form})
 
 def detail_livre(request, id):
     livre = get_object_or_404(Livre, id=id)
-    auteurs = Auteur.objects.filter(livre=livre)
-    tags = Tag.objects.filter(livre=livre)
+    if len(livre.tags.filter(pour_adulte=True))>0 and (not request.user.is_authenticated or not est_majeur(request.user)):
+        raise PermissionDenied("Vous n'avez pas l'age minimum pour voir ce contenu.")
+    auteurs = livre.auteurs.all()
+    tags = livre.tags.all()
     bouton_ajouter = True
     lecture = None
     if request.user.is_authenticated:
@@ -51,6 +56,8 @@ def creer_livre(request):
 
 def modifier_livre(request, id):
     livre = get_object_or_404(Livre, id=id)
+    if len(livre.tags.filter(pour_adulte=True))>0 and (not request.user.is_authenticated or not est_majeur(request.user)):
+        raise PermissionDenied("Vous n'avez pas l'age minimum pour voir ce contenu.")
     livre_form = LivreForm(instance=livre)
     if request.method == 'POST':
         livre_form = LivreForm(request.POST, request.FILES, instance=livre)
