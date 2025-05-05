@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 import os
 from django.utils.timezone import now
 from PIL import Image
+from django.dispatch import receiver
+from django.db.models.signals import pre_delete, pre_save
 
 class Auteur(models.Model):
     nom = models.CharField(max_length=100)
@@ -14,7 +16,7 @@ class Auteur(models.Model):
 
 class Tag(models.Model):
     tag = models.CharField(max_length=100)
-    nsfw = models.BooleanField()
+    pour_adulte = models.BooleanField()
     modifiable = models.BooleanField(default=True)
 
     def __str__(self):
@@ -52,6 +54,23 @@ class Livre(models.Model):
     def __str__(self):
         return self.nom
 
+@receiver(pre_delete, sender=Livre)
+def supprimer_image_livre(sender, instance, **kwargs):
+    if instance.image and instance.image.name != "default.png":
+        if os.path.isfile(instance.image.path):
+            os.remove(instance.image.path)
+
+@receiver(pre_save, sender=Livre)
+def remplacer_image_livre(sender, instance, **kwargs):
+    if instance.pk:
+        try:
+            ancien_livre = Livre.objects.get(pk=instance.pk)
+            if ancien_livre.image and ancien_livre.image.name != "default.png" and (not instance.image or ancien_livre.image != instance.image):
+                if os.path.isfile(ancien_livre.image.path):
+                    os.remove(ancien_livre.image.path)
+        except Livre.DoesNotExist:
+            pass
+
 class Lecture(models.Model):
     date_debut = models.DateField(null=True, blank=True)
     date_fin = models.DateField(null=True, blank=True)
@@ -63,7 +82,7 @@ class Lecture(models.Model):
         verbose_name="Note"
     )
 
-    livre = models.ForeignKey(Livre, on_delete=models.PROTECT)
+    livre = models.ForeignKey(Livre, on_delete=models.CASCADE)
     lecteur = models.ForeignKey(Lecteur, on_delete=models.PROTECT)
 
     class Meta:
