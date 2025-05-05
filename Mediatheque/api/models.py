@@ -16,7 +16,7 @@ class Auteur(models.Model):
 
 class Tag(models.Model):
     tag = models.CharField(max_length=100)
-    nsfw = models.BooleanField()
+    pour_adulte = models.BooleanField()
     modifiable = models.BooleanField(default=True)
 
     def __str__(self):

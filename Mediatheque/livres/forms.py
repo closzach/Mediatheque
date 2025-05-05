@@ -77,7 +77,7 @@ class TagForm(forms.ModelForm):
             'tag': forms.TextInput(attrs={
                 'class': 'form-control'
             }),
-            'nsfw': forms.CheckboxInput(attrs={
+            'pour_adulte': forms.CheckboxInput(attrs={
                 'class': 'form-check-input'
             }),
             'modifiable': forms.CheckboxInput(attrs={
