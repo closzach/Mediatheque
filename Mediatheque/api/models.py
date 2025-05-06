@@ -13,6 +13,13 @@ class Auteur(models.Model):
 
     def __str__(self):
         return self.nom
+    
+    class Meta:
+        permissions = (
+            ("creer_auteur", "Peut créer un auteur."),
+            ("modifier_auteur", "Peut modifier un auteur."),
+            ("supprimer_auteur", "Peut supprimer un auteur.")
+        )
 
 class Tag(models.Model):
     tag = models.CharField(max_length=100)
@@ -21,6 +28,13 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.tag
+    
+    class Meta:
+        permissions = (
+            ('creer_tag', 'Peut créer un tag.'),
+            ('modifier_tag', 'Peut modifier un tag.'),
+            ('supprimer_tag', 'Peut supprimer un tag.'),
+        )
 
 class Lecteur(AbstractUser):
     date_naissance = models.DateField()
@@ -53,6 +67,13 @@ class Livre(models.Model):
 
     def __str__(self):
         return self.nom
+
+    class Meta:
+        permissions = (
+            ('creer_livre', 'Peut créer un livre.'),
+            ('modifier_livre', 'Peut modifier un livre.'),
+            ('suppression_livre', 'Peut supprimer un livre.')
+        )
 
 @receiver(pre_delete, sender=Livre)
 def supprimer_image_livre(sender, instance, **kwargs):
