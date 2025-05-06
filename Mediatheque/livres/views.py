@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.core.exceptions import PermissionDenied
 from .forms import LivreForm, AuteurForm, TagForm, SearchForm, SearchLivreForm, SearchLectureForm, LectureForm
 from api.models import Livre, Auteur, Tag, Lecture
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from api.utils import est_majeur
 
 def lister_livres(request):
@@ -44,6 +44,7 @@ def detail_livre(request, id):
             bouton_ajouter = False
     return render(request, 'livres/detail_livre.html', {'livre': livre, 'auteurs': auteurs, 'tags': tags, 'bouton_ajouter': bouton_ajouter, 'lecture': lecture})
 
+@permission_required('api.creer_livre')
 def creer_livre(request):
     if request.method == 'POST':
         livre_form = LivreForm(request.POST, request.FILES)
@@ -54,6 +55,7 @@ def creer_livre(request):
         livre_form = LivreForm()
     return render(request, 'livres/creer_livre.html', {'form': livre_form})
 
+@permission_required('api.modifier_livre')
 def modifier_livre(request, id):
     livre = get_object_or_404(Livre, id=id)
     if len(livre.tags.filter(pour_adulte=True))>0 and (not request.user.is_authenticated or not est_majeur(request.user)):
@@ -66,6 +68,7 @@ def modifier_livre(request, id):
             return redirect('livres:detail_livre', id=id)
     return render(request, 'livres/modifier_livre.html', {'livre': livre, 'form': livre_form})
 
+@permission_required('api.supprimer_livre')
 def supprimer_livre(request, id):
     if request.method == "POST":
         livre = get_object_or_404(Livre, id=id)
@@ -92,6 +95,7 @@ def detail_auteur(request, id):
     livres = Livre.objects.filter(auteurs=auteur)
     return render(request, 'auteurs/detail_auteur.html', {'auteur': auteur, 'livres': livres})
 
+@permission_required('api.creer_auteur')
 def creer_auteur(request):
     if request.method == 'POST':
         auteur_form = AuteurForm(request.POST)
@@ -102,6 +106,7 @@ def creer_auteur(request):
         auteur_form = AuteurForm()
     return render(request, 'auteurs/creer_auteur.html', {'form': auteur_form})
 
+@permission_required('api.modifier_auteur')
 def modifier_auteur(request, id):
     auteur = get_object_or_404(Auteur, id=id)
     auteur_form = AuteurForm(instance=auteur)
@@ -112,6 +117,7 @@ def modifier_auteur(request, id):
             return redirect('livres:detail_auteur', id=id)
     return render(request, 'auteurs/modifier_auteur.html', {'auteur': auteur, 'form': auteur_form})
 
+@permission_required('api.supprimer_livre')
 def supprimer_auteur(request, id):
     if request.method == "POST":
         auteur = get_object_or_404(Auteur, id=id)
@@ -119,6 +125,7 @@ def supprimer_auteur(request, id):
         return redirect('livres:liste_auteurs')
     return redirect(reverse('livres:detail_auteur', args=[id]))
 
+@permission_required('api.creer_tag')
 def creer_tag(request):
     if request.method == 'POST':
         tag_form = TagForm(request.POST)
@@ -143,6 +150,7 @@ def lister_tags(request):
         search_form = SearchForm()
     return render(request, 'tags/liste_tags.html', {'tags': tags, 'search_form': search_form})
 
+@permission_required('api.modifier_tag')
 def modifier_tag(request, id):
     tag = get_object_or_404(Tag, id=id)
     tag_form = TagForm(instance=tag)
@@ -155,6 +163,7 @@ def modifier_tag(request, id):
             return redirect('livres:liste_tags')
     return render(request, 'auteurs/modifier_auteur.html', {'tag': tag, 'form': tag_form})
 
+@permission_required('api.supprimer_tag')
 def supprimer_tag(request, id):
     tag = get_object_or_404(Tag, id=id)
 
@@ -209,7 +218,6 @@ def supprimer_lecture(request, id):
 def detail_lecture(request, id):
     lecture = get_object_or_404(Lecture, id=id)
     lecture_range = range(1, 6)
-    print(lecture_range)
 
     if lecture.lecteur != request.user:
         raise PermissionDenied(f"Cette lecture n'appartient pas à {{request.user}}.")
