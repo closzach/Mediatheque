@@ -42,19 +42,25 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'livres:liste_tags' %}">Tags</a>
                         </li>
-                        {% if user.is_authenticated %}
+                        {% if user.is_authenticated  and perms.api.creer_livre and perms.api.creer_auteur and perms.api.creer_tag %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Créer</a>
                             <ul class="dropdown-menu">
+                                {% if perms.api.creer_livre %}
                                 <li>
                                     <a class="dropdown-item" href="{% url 'livres:creer_livre' %}">Livre</a>
                                 </li>
+                                {% endif %}
+                                {% if perms.api.creer_auteur %}
                                 <li>
                                     <a class="dropdown-item" href="{% url 'livres:creer_auteur' %}">Auteur</a>
                                 </li>
+                                {% endif %}
+                                {% if perms.api.creer_tag %}
                                 <li>
                                     <a class="dropdown-item" href="{% url 'livres:creer_tag' %}">Tag</a>
                                 </li>
+                                {% endif %}
                             </ul>
                         </li>
                         {% endif %}

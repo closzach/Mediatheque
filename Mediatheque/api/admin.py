@@ -4,7 +4,7 @@ from api.models import *
 admin.site.register([
     Auteur,
     Tag,
-    Lecteur,
+    User,
     Livre,
-    Lecture
+    Lecture,
 ])

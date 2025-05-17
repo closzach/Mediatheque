@@ -1,9 +1,9 @@
 from django.utils import timezone
 from datetime import timedelta
 
-def est_majeur(lecteur):
+def est_majeur(user):
     today = timezone.now().date()
-    age = today - lecteur.date_naissance
+    age = today - user.date_naissance
     majorite = timedelta(days=365*18)
     return age>=majorite
 
