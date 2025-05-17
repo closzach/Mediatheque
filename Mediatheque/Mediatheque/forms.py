@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from api.models import Lecteur
+from api.models import User
 
-class LecteurForm(UserCreationForm):
+class UserForm(UserCreationForm):
     date_naissance = forms.DateField(
         widget=forms.DateInput(attrs={
             'type': 'date',
@@ -28,7 +28,7 @@ class LecteurForm(UserCreationForm):
     )
 
     class Meta:
-        model = Lecteur
+        model = User
         fields = ['username', 'date_naissance', 'password1', 'password2']
 
         widgets = {

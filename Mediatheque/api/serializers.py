@@ -11,9 +11,9 @@ class TagSerializer(ModelSerializer):
         model = Tag
         fields = '__all__'
 
-class LecteurSerializer(ModelSerializer):
+class UserSerializer(ModelSerializer):
     class Meta:
-        model = Lecteur
+        model = User
         fields = '__all__'
 
 class LivreSerializer(ModelSerializer):
@@ -26,7 +26,7 @@ class LivreSerializer(ModelSerializer):
 
 class LectureSerializer(ModelSerializer):
     livre = LivreSerializer(read_only=True)
-    lecteur = LecteurSerializer(read_only=True)
+    lecteur = UserSerializer(read_only=True)
 
     class Meta:
         model = Lecture
