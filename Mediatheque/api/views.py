@@ -10,9 +10,9 @@ class TagViewSet(ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
-class LecteurViewSet(ModelViewSet):
-    queryset = Lecteur.objects.all()
-    serializer_class = LecteurSerializer
+class UserViewSet(ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 class LivreViewSet(ModelViewSet):
     queryset = Livre.objects.all()

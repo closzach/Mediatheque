@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth import get_user_model
 import os
 from django.utils.timezone import now
 from PIL import Image
@@ -36,8 +37,10 @@ class Tag(models.Model):
             ('supprimer_tag', 'Peut supprimer un tag.'),
         )
 
-class Lecteur(AbstractUser):
+class User(AbstractUser):
     date_naissance = models.DateField()
+
+    REQUIRED_FIELDS = ['date_naissance']
 
     def __str__(self):
         return self.username
@@ -104,7 +107,7 @@ class Lecture(models.Model):
     )
 
     livre = models.ForeignKey(Livre, on_delete=models.CASCADE)
-    lecteur = models.ForeignKey(Lecteur, on_delete=models.PROTECT)
+    lecteur = models.ForeignKey(get_user_model(), on_delete=models.PROTECT)
 
     class Meta:
         constraints = [
