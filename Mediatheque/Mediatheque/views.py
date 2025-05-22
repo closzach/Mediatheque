@@ -3,6 +3,7 @@ from django.db.models import Max
 from django.shortcuts import render, redirect
 from .forms import UserForm
 from api.models import Livre
+from django.contrib.auth.decorators import login_required
 
 def hub(request):
     max_id = Livre.objects.aggregate(max_id=Max('id'))['max_id']
@@ -22,3 +23,7 @@ def signup(request):
     else:
         form = UserForm()
     return render(request, 'auth/signup.html', {'form': form})
+
+@login_required
+def account(request):
+    return render(request, 'user/account.html')
