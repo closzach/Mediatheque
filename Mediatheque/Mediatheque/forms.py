@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from api.models import User
 
 class UserForm(UserCreationForm):
@@ -39,3 +39,33 @@ class UserForm(UserCreationForm):
                 'class': 'form-control'
             })
         }
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        if self.instance and self.instance.pk and self.instance.date_naissance:
+            self.initial['date_naissance'] = self.instance.date_naissance.strftime('%Y-%m-%d')
+
+class UserUpdateForm(forms.ModelForm):
+    date_naissance = forms.DateField(
+        widget=forms.DateInput(attrs={
+            'type': 'date',
+            'class': 'form-control'
+        }),
+        label="Date de naissance"
+    )
+
+    class Meta:
+        model = User
+        fields = ['username', 'date_naissance']
+
+    def __init__(self, *args, **kwargs):
+        super(UserUpdateForm, self).__init__(*args, **kwargs)
+        if self.instance and self.instance.pk and self.instance.date_naissance:
+            self.initial['date_naissance'] = self.instance.date_naissance.strftime('%Y-%m-%d')
+        self.fields['username'].widget.attrs.update({'class': 'form-control'})
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['old_password'].widget.attrs.update({'class': 'form-control'})
+        self.fields['new_password1'].widget.attrs.update({'class': 'form-control'})
+        self.fields['new_password2'].widget.attrs.update({'class': 'form-control'})
