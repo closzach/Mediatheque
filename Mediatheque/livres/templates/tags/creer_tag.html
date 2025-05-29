@@ -4,7 +4,8 @@
 <h1>Créer un nouveau tag</h1>
 <form method="POST" class="container">
     {% csrf_token %}
-    {{ form }}
-    <input class="btn btn-primary" type="submit" value="Enregistrer">
+    {{ form.as_p }}
+    <a href="{% url 'livres:liste_tags' %}" class="btn btn-outline-secondary">Annuler</a>
+    <input class="btn btn-success" type="submit" value="Enregistrer">
 </form>
 {% endblock %}

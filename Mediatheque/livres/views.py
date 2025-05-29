@@ -41,7 +41,7 @@ def detail_livre(request, id):
     lecture = None
     if request.user.is_authenticated:
         if len(Lecture.objects.filter(lecteur=request.user, livre=livre))!=0:
-            lecture = Lecture.objects.filter(lecteur=request.user, livre=livre)
+            lecture = Lecture.objects.filter(lecteur=request.user, livre=livre).first()
             bouton_ajouter = False
     return render(request, 'livres/detail_livre.html', {'livre': livre, 'auteurs': auteurs, 'tags': tags, 'bouton_ajouter': bouton_ajouter, 'lecture': lecture})
 
@@ -162,7 +162,7 @@ def modifier_tag(request, id):
         if tag_form.has_changed() and tag_form.is_valid():
             tag_form.save()
             return redirect('livres:liste_tags')
-    return render(request, 'auteurs/modifier_auteur.html', {'tag': tag, 'form': tag_form})
+    return render(request, 'tags/modifier_tag.html', {'tag': tag, 'form': tag_form})
 
 @permission_required('api.supprimer_tag')
 def supprimer_tag(request, id):
