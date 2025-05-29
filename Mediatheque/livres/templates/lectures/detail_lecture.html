@@ -8,6 +8,17 @@
 {% endblock %}
 
 {% block content %}
+{% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
 <div class="container mt-4">
     <div class="row">
         <div class="col-lg-4">
@@ -28,6 +39,24 @@
                 <strong>Statut de lecture :</strong> 
                 <span class="badge bg-primary">{{ lecture.statut|default:"Non spécifié" }}</span>
             </p>
+            {% if lecture.marque_pages and lecture.statut == "en pause" %}
+            <p>
+                <strong>Marque-pages</strong>
+                <span class="badge bg-secondary">{{ lecture.marque_pages }}</span>
+            </p>
+            {% endif %}
+            {% if lecture.statut == "en cours" %}
+            <div class="mb-3">
+                <form method="POST" action="{% url 'livres:modifier_marque_pages' lecture.id %}" class="d-flex align-items-center gap-2">
+                    {% csrf_token %}
+                    <strong>Marque-pages :</strong>
+                    <div style="width: 100px;">
+                        {{ form.marque_pages }}
+                    </div>
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">Mettre à jour</button>
+                </form>
+            </div>
+            {% endif %}
             {% if lecture.date_debut %}
             <p>
                 <strong>Date de début :</strong> {{ lecture.date_debut|date:"d/m/Y" }}

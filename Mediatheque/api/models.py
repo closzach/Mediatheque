@@ -96,15 +96,24 @@ def remplacer_image_livre(sender, instance, **kwargs):
             pass
 
 class Lecture(models.Model):
+    STATUT_CHOICES = [
+        ('a lire', 'À lire'),
+        ('lu', 'Lu'),
+        ('en cours', 'En cours'),
+        ('abandonne', 'Abandonné'),
+        ('en pause', 'En pause'),
+    ]
+
     date_debut = models.DateField(null=True, blank=True)
     date_fin = models.DateField(null=True, blank=True)
-    statut = models.CharField(max_length=20)
+    statut = models.CharField(max_length=20, choices=STATUT_CHOICES)
     note = models.PositiveSmallIntegerField(
         null=True,
         blank=True,
         choices=[(i, f"{i}") for i in range(1, 6)],
         verbose_name="Note"
     )
+    marque_pages = models.PositiveIntegerField(null=True, blank=True)
 
     livre = models.ForeignKey(Livre, on_delete=models.CASCADE)
     lecteur = models.ForeignKey(get_user_model(), on_delete=models.PROTECT)
