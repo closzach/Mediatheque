@@ -23,4 +23,5 @@ urlpatterns = [
     path('lecture/supprimer/<int:id>', supprimer_lecture, name='supprimer_lecture'),
     path('lecture/<int:id>', detail_lecture, name='detail_lecture'),
     path('lecture/modifier/<int:id>', modifier_lecture, name='modifier_lecture'),
+    path('lecture/modifier_mp/<int:id>', modifier_marque_pages, name='modifier_marque_pages'),
 ]

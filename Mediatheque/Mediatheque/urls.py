@@ -50,7 +50,8 @@ urlpatterns = [
     path('signup/', signup, name='signup'),
     path('account/', account, name='account'),
     path('account/edit/', modifier_utilisateur, name='modifier_account'),
-    path('account/change_password/', change_password, name='change_password')
+    path('account/change_password/', change_password, name='change_password'),
+    path('account/delete/', supprimer_account, name='supprimer_account'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

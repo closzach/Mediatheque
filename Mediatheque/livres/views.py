@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.core.exceptions import PermissionDenied
-from .forms import LivreForm, AuteurForm, TagForm, SearchForm, SearchLivreForm, SearchLectureForm, LectureForm
+from .forms import LivreForm, AuteurForm, TagForm, SearchForm, SearchLivreForm, SearchLectureForm, LectureForm, MarquePagesForm
 from api.models import Livre, Auteur, Tag, Lecture
 from django.contrib.auth.decorators import login_required, permission_required
 from api.utils import est_majeur
+from django.contrib import messages
 
 def lister_livres(request):
     if request.user.is_authenticated and est_majeur(request.user):
@@ -218,18 +219,41 @@ def supprimer_lecture(request, id):
 def detail_lecture(request, id):
     lecture = get_object_or_404(Lecture, id=id)
     lecture_range = range(1, 6)
+    lecture_form = MarquePagesForm(instance=lecture)
 
     if lecture.lecteur != request.user:
         raise PermissionDenied(f"Cette lecture n'appartient pas à {{request.user}}.")
 
-    return render(request, 'lectures/detail_lecture.html', {'lecture': lecture, 'lecture_range': lecture_range})
+    return render(request, 'lectures/detail_lecture.html', {'lecture': lecture, 'lecture_range': lecture_range, 'form': lecture_form})
 
+@login_required
 def modifier_lecture(request, id):
     lecture = get_object_or_404(Lecture, id=id)
     lecture_form = LectureForm(instance=lecture)
+
+    if lecture.lecteur != request.user:
+        raise PermissionDenied(f"Cette lecture n'appartient pas à {request.user}.")
+
     if request.method == 'POST':
         lecture_form = LectureForm(request.POST, instance=lecture)
         if lecture_form.has_changed() and lecture_form.is_valid():
             lecture_form.save()
             return redirect('livres:detail_lecture', id=lecture.id)
     return render(request, 'lectures/modifier_lecture.html', {'lecture': lecture, 'form': lecture_form})
+
+@login_required
+def modifier_marque_pages(request, id):
+    lecture = get_object_or_404(Lecture, id=id)
+
+    if lecture.lecteur != request.user:
+        raise PermissionDenied(f"Cette lecture n'appartient pas à {request.user}.")
+
+    if request.method == 'POST':
+        lecture_form = MarquePagesForm(request.POST, instance=lecture)
+        if lecture_form.is_valid():
+            lecture_form.save()
+            messages.success(request, "Marque-pages mis à jour avec succès !")
+        else:
+            messages.error(request, "Erreur lors de la mise à jour du marque-pages.")
+
+    return redirect('livres:detail_lecture', id=lecture.id)

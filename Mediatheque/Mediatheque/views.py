@@ -5,6 +5,7 @@ from .forms import UserForm, UserUpdateForm, CustomPasswordChangeForm
 from api.models import Livre
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
+from django.urls import reverse
 
 def hub(request):
     max_id = Livre.objects.aggregate(max_id=Max('id'))['max_id']
@@ -51,3 +52,10 @@ def change_password(request):
     else:
         form = CustomPasswordChangeForm(request.user)
     return render(request, 'user/change_password.html', {'form': form})
+
+@login_required
+def supprimer_account(request):
+    if request.method == 'POST':
+        request.user.delete()
+        redirect('hub')
+    return redirect(reverse('account'))

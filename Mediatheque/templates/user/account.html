@@ -101,9 +101,10 @@ Mon compte
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     Annuler
                 </button>
-                <a href="#" class="btn btn-danger">
-                    Confirmer la suppression
-                </a>
+                <form method="POST" action="{% url 'supprimer_account' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Confirmer la suppression</button>
+                </form>
             </div>
         </div>
     </div>

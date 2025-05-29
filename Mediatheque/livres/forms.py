@@ -155,7 +155,7 @@ class SearchLectureForm(forms.Form):
 class LectureForm(forms.ModelForm):
     class Meta:
         model = Lecture
-        fields = ['date_debut', 'date_fin', 'statut', 'note']
+        fields = ['date_debut', 'date_fin', 'statut', 'note', 'marque_pages']
         widgets = {
             'date_debut': forms.DateInput(
                 attrs={
@@ -174,7 +174,17 @@ class LectureForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
+            'statut': forms.Select(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
             'note': forms.Select(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'marque_pages': forms.NumberInput(
                 attrs={
                     'class': 'form-control'
                 }
@@ -185,6 +195,7 @@ class LectureForm(forms.ModelForm):
             'date_fin': 'Date de fin',
             'statut': 'Statut de lecture',
             'note': 'Note',
+            'marque_pages': 'Marque-pages',
         }
 
     def __init__(self, *args, **kwargs):
@@ -194,16 +205,14 @@ class LectureForm(forms.ModelForm):
         if self.instance and self.instance.pk and self.instance.date_fin:
             self.initial['date_fin'] = self.instance.date_fin.strftime('%Y-%m-%d')
 
-    STATUT_CHOICES = [
-        ('a lire', 'À lire'),
-        ('lu', 'Lu'),
-        ('en cours', 'En cours'),
-        ('abandonne', 'Abandonné'),
-        ('en pause', 'En pause'),
-    ]
-    statut = forms.ChoiceField(
-        choices=STATUT_CHOICES,
-        required=False,
-        widget=forms.Select(attrs={'class': 'form-control'}),
-        label='Statut de lecture'
-    )
+class MarquePagesForm(forms.ModelForm):
+    class Meta:
+        model = Lecture
+        fields = ['marque_pages']
+        widgets = {
+            'marque_pages': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            )
+        }
