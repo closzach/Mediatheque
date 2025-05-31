@@ -53,9 +53,17 @@ class UserUpdateForm(forms.ModelForm):
         label="Date de naissance"
     )
 
+    cacher_pour_adulte = forms.BooleanField(
+        widget=forms.CheckboxInput(attrs={
+            'class': 'form-check-input'
+        }),
+        label="Cacher les contenus pour adulte",
+        required=False
+    )
+
     class Meta:
         model = User
-        fields = ['username', 'date_naissance']
+        fields = ['username', 'date_naissance', 'cacher_pour_adulte']
 
     def __init__(self, *args, **kwargs):
         super(UserUpdateForm, self).__init__(*args, **kwargs)

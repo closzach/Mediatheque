@@ -8,7 +8,7 @@ from api.utils import est_majeur
 from django.contrib import messages
 
 def lister_livres(request):
-    if request.user.is_authenticated and est_majeur(request.user):
+    if request.user.is_authenticated and est_majeur(request.user) and not request.user.cacher_pour_adulte:
         livres = Livre.objects.prefetch_related('auteurs')
     else:
         livres = Livre.objects.exclude(tags__pour_adulte=True).prefetch_related('auteurs')
@@ -33,8 +33,8 @@ def lister_livres(request):
 
 def detail_livre(request, id):
     livre = get_object_or_404(Livre, id=id)
-    if len(livre.tags.filter(pour_adulte=True))>0 and (not request.user.is_authenticated or not est_majeur(request.user)):
-        raise PermissionDenied("Vous n'avez pas l'age minimum pour voir ce contenu.")
+    if len(livre.tags.filter(pour_adulte=True))>0 and (not request.user.is_authenticated or not est_majeur(request.user) or request.user.cacher_pour_adulte):
+        raise PermissionDenied("Vous ne pouvez pas voir ce contenu.")
     auteurs = livre.auteurs.all()
     tags = livre.tags.all()
     bouton_ajouter = True
@@ -59,8 +59,8 @@ def creer_livre(request):
 @permission_required('api.modifier_livre')
 def modifier_livre(request, id):
     livre = get_object_or_404(Livre, id=id)
-    if len(livre.tags.filter(pour_adulte=True))>0 and (not request.user.is_authenticated or not est_majeur(request.user)):
-        raise PermissionDenied("Vous n'avez pas l'age minimum pour voir ce contenu.")
+    if len(livre.tags.filter(pour_adulte=True))>0 and (not request.user.is_authenticated or not est_majeur(request.user) or request.user.cacher_pour_adulte):
+        raise PermissionDenied("Vous ne pouvez pas voir ce contenu.")
     livre_form = LivreForm(instance=livre)
     if request.method == 'POST':
         livre_form = LivreForm(request.POST, request.FILES, instance=livre)
@@ -93,7 +93,10 @@ def liste_auteurs(request):
 
 def detail_auteur(request, id):
     auteur = get_object_or_404(Auteur, id=id)
-    livres = Livre.objects.filter(auteurs=auteur)
+    if request.user.is_authenticated and est_majeur(request.user) and not request.user.cacher_pour_adulte:
+        livres = Livre.objects.prefetch_related('auteurs')
+    else:
+        livres = Livre.objects.exclude(tags__pour_adulte=True).prefetch_related('auteurs')
     return render(request, 'auteurs/detail_auteur.html', {'auteur': auteur, 'livres': livres})
 
 @permission_required('api.creer_auteur')

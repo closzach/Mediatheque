@@ -39,6 +39,7 @@ class Tag(models.Model):
 
 class User(AbstractUser):
     date_naissance = models.DateField()
+    cacher_pour_adulte = models.BooleanField(default=True)
 
     REQUIRED_FIELDS = ['date_naissance']
 
