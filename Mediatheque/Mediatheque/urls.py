@@ -52,6 +52,11 @@ urlpatterns = [
     path('account/edit/', modifier_utilisateur, name='modifier_account'),
     path('account/change_password/', change_password, name='change_password'),
     path('account/delete/', supprimer_account, name='supprimer_account'),
+    path('groups/', group_list, name='group_list'),
+    path('manage-group-users/<int:group_id>/', manage_group_users, name='manage_group_users'),
+    path('add-user-to-group/<int:group_id>/<int:user_id>/', add_user_to_group, name='add_user_to_group'),
+    path('remove-user-from-group/<int:group_id>/<int:user_id>/', remove_user_from_group, name='remove_user_from_group'),
+    path('ajax-toggle-user-group/<int:group_id>/<int:user_id>/', ajax_toggle_user_group, name='ajax_toggle_user_group'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
