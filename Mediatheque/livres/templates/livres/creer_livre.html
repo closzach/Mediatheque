@@ -5,6 +5,7 @@
 <form method="POST" class="container" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <input class="btn btn-primary" type="submit" value="Enregistrer">
+    <a href="{% url 'livres:rechercher' %}" class="btn btn-outline-secondary">Annuler</a>
+    <input class="btn btn-success" type="submit" value="Enregistrer">
 </form>
 {% endblock %}

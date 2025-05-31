@@ -30,6 +30,11 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
+                        {% if perms.auth.view_group %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'group_list' %}">Gestion des groupes</a>
+                        </li>
+                        {% endif %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'livres:rechercher' %}">Rechercher un livre</a>
                         </li>
@@ -42,19 +47,25 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'livres:liste_tags' %}">Tags</a>
                         </li>
-                        {% if user.is_authenticated %}
+                        {% if user.is_authenticated  and perms.api.creer_livre and perms.api.creer_auteur and perms.api.creer_tag %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Créer</a>
                             <ul class="dropdown-menu">
+                                {% if perms.api.creer_livre %}
                                 <li>
                                     <a class="dropdown-item" href="{% url 'livres:creer_livre' %}">Livre</a>
                                 </li>
+                                {% endif %}
+                                {% if perms.api.creer_auteur %}
                                 <li>
                                     <a class="dropdown-item" href="{% url 'livres:creer_auteur' %}">Auteur</a>
                                 </li>
+                                {% endif %}
+                                {% if perms.api.creer_tag %}
                                 <li>
                                     <a class="dropdown-item" href="{% url 'livres:creer_tag' %}">Tag</a>
                                 </li>
+                                {% endif %}
                             </ul>
                         </li>
                         {% endif %}
@@ -62,7 +73,7 @@
                     <ul class="navbar-nav ms-auto">
                         {% if user.is_authenticated %}
                             <li class="nav-item">
-                                <a class="nav-link" href="#">{{ user.username }}</a>
+                                <a class="nav-link" href="{% url 'account' %}">{{ user.username }}</a>
                             </li>
                             <li class="nav-item">
                                 <form method="POST" action="{% url 'logout' %}" style="display: inline;">

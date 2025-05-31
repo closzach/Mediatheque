@@ -1,8 +1,8 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from api.models import Lecteur
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from api.models import User
 
-class LecteurForm(UserCreationForm):
+class UserForm(UserCreationForm):
     date_naissance = forms.DateField(
         widget=forms.DateInput(attrs={
             'type': 'date',
@@ -28,7 +28,7 @@ class LecteurForm(UserCreationForm):
     )
 
     class Meta:
-        model = Lecteur
+        model = User
         fields = ['username', 'date_naissance', 'password1', 'password2']
 
         widgets = {
@@ -39,3 +39,41 @@ class LecteurForm(UserCreationForm):
                 'class': 'form-control'
             })
         }
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        if self.instance and self.instance.pk and self.instance.date_naissance:
+            self.initial['date_naissance'] = self.instance.date_naissance.strftime('%Y-%m-%d')
+
+class UserUpdateForm(forms.ModelForm):
+    date_naissance = forms.DateField(
+        widget=forms.DateInput(attrs={
+            'type': 'date',
+            'class': 'form-control'
+        }),
+        label="Date de naissance"
+    )
+
+    cacher_pour_adulte = forms.BooleanField(
+        widget=forms.CheckboxInput(attrs={
+            'class': 'form-check-input'
+        }),
+        label="Cacher les contenus pour adulte",
+        required=False
+    )
+
+    class Meta:
+        model = User
+        fields = ['username', 'date_naissance', 'cacher_pour_adulte']
+
+    def __init__(self, *args, **kwargs):
+        super(UserUpdateForm, self).__init__(*args, **kwargs)
+        if self.instance and self.instance.pk and self.instance.date_naissance:
+            self.initial['date_naissance'] = self.instance.date_naissance.strftime('%Y-%m-%d')
+        self.fields['username'].widget.attrs.update({'class': 'form-control'})
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['old_password'].widget.attrs.update({'class': 'form-control'})
+        self.fields['new_password1'].widget.attrs.update({'class': 'form-control'})
+        self.fields['new_password2'].widget.attrs.update({'class': 'form-control'})

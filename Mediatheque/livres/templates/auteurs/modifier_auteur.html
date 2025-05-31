@@ -5,6 +5,7 @@
 <form method="POST" class="container">
     {% csrf_token %}
     {{ form.as_p }}
-    <input class="btn btn-primary" type="submit" value="Enregistrer">
+    <a href="{% url 'livres:liste_auteurs' %}" class="btn btn-outline-secondary">Annuler</a>
+    <input class="btn btn-success" type="submit" value="Enregistrer">
 </form>
 {% endblock %}

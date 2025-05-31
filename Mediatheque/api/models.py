@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth import get_user_model
 import os
 from django.utils.timezone import now
 from PIL import Image
@@ -13,17 +14,34 @@ class Auteur(models.Model):
 
     def __str__(self):
         return self.nom
+    
+    class Meta:
+        permissions = (
+            ("creer_auteur", "Peut créer un auteur."),
+            ("modifier_auteur", "Peut modifier un auteur."),
+            ("supprimer_auteur", "Peut supprimer un auteur.")
+        )
 
 class Tag(models.Model):
     tag = models.CharField(max_length=100)
-    nsfw = models.BooleanField()
+    pour_adulte = models.BooleanField()
     modifiable = models.BooleanField(default=True)
 
     def __str__(self):
         return self.tag
+    
+    class Meta:
+        permissions = (
+            ('creer_tag', 'Peut créer un tag.'),
+            ('modifier_tag', 'Peut modifier un tag.'),
+            ('supprimer_tag', 'Peut supprimer un tag.'),
+        )
 
-class Lecteur(AbstractUser):
+class User(AbstractUser):
     date_naissance = models.DateField()
+    cacher_pour_adulte = models.BooleanField(default=True)
+
+    REQUIRED_FIELDS = ['date_naissance']
 
     def __str__(self):
         return self.username
@@ -54,6 +72,13 @@ class Livre(models.Model):
     def __str__(self):
         return self.nom
 
+    class Meta:
+        permissions = (
+            ('creer_livre', 'Peut créer un livre.'),
+            ('modifier_livre', 'Peut modifier un livre.'),
+            ('suppression_livre', 'Peut supprimer un livre.')
+        )
+
 @receiver(pre_delete, sender=Livre)
 def supprimer_image_livre(sender, instance, **kwargs):
     if instance.image and instance.image.name != "default.png":
@@ -72,18 +97,27 @@ def remplacer_image_livre(sender, instance, **kwargs):
             pass
 
 class Lecture(models.Model):
+    STATUT_CHOICES = [
+        ('a lire', 'À lire'),
+        ('lu', 'Lu'),
+        ('en cours', 'En cours'),
+        ('abandonne', 'Abandonné'),
+        ('en pause', 'En pause'),
+    ]
+
     date_debut = models.DateField(null=True, blank=True)
     date_fin = models.DateField(null=True, blank=True)
-    statut = models.CharField(max_length=20)
+    statut = models.CharField(max_length=20, choices=STATUT_CHOICES)
     note = models.PositiveSmallIntegerField(
         null=True,
         blank=True,
         choices=[(i, f"{i}") for i in range(1, 6)],
         verbose_name="Note"
     )
+    marque_pages = models.PositiveIntegerField(null=True, blank=True)
 
     livre = models.ForeignKey(Livre, on_delete=models.CASCADE)
-    lecteur = models.ForeignKey(Lecteur, on_delete=models.PROTECT)
+    lecteur = models.ForeignKey(get_user_model(), on_delete=models.PROTECT)
 
     class Meta:
         constraints = [
