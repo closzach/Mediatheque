@@ -12,6 +12,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
+from configparser import ConfigParser
+
+config = ConfigParser()
+config.read("../config.ini")
+_SECRET_KEY_ = config.get("DJANGO", "SECRET_KEY")
+_DEBUG_ = config.get("DJANGO", "DEBUG")
+_ALLOWED_HOSTS_ = config.get("DJANGO", "ALLOWED_HOSTS")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +28,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&_@kjewg$^!eyp+9ofl&_pp&=9+3n7ql+rjss(o$eiw947=qbz'
+SECRET_KEY = _SECRET_KEY_
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = _DEBUG_
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = _ALLOWED_HOSTS_.split(",")
 
 
 # Application definition
