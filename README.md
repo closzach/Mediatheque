@@ -20,12 +20,12 @@ python -m pip install -r requirements.txt
 
 Faire les migrations de la base de données
 ```sh
-python python ./Mediatheque/manage.py makemigrations && python ./Mediatheque/manage.py migrate
+python python manage.py makemigrations && python manage.py migrate
 ```
 
 Lancer le serveur :
 ```sh
-gunicorn Mediatheque.wsgi
+python manage.py runserver
 ```
 
 Après avoir fait l'installation et lancé avec une des méthodes, accèder au site avec l'url suivante :
@@ -36,14 +36,9 @@ http://127.0.0.1:8000/
 
 ## Développement
 
-Lancer le serveur
-```sh
-python ./Mediatheque/manage.py runserver
-```
-
 Lancer les tests de l'API
 ```sh
-python ./Mediatheque/manage.py test
+python manage.py test
 ```
 
 ## Documentation d'API
