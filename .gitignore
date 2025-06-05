@@ -4,4 +4,4 @@ node_modules
 migrations
 venv
 media/livres/*
-.env
+config.ini
