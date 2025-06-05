@@ -12,13 +12,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
-from configparser import ConfigParser
-
-config = ConfigParser()
-config.read("../config.ini")
-_SECRET_KEY_ = config.get("DJANGO", "SECRET_KEY")
-_DEBUG_ = config.get("DJANGO", "DEBUG")
-_ALLOWED_HOSTS_ = config.get("DJANGO", "ALLOWED_HOSTS")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = _SECRET_KEY_
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = _DEBUG_
+DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = _ALLOWED_HOSTS_.split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
 
 # Application definition
@@ -94,7 +87,7 @@ WSGI_APPLICATION = 'Mediatheque.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join('/app/data/', 'db.sqlite3'),
     }
 }
 

@@ -1,5 +1,5 @@
-# Livres
-Site en Django voué à la gestion de sa bibliothèque et au suivi de ses lectures.
+# Médiathèque
+Site en Django voué à la gestion de sa médiathèque.
 
 ## Installation et lancement [LINUX]
 
@@ -25,7 +25,7 @@ python python ./Mediatheque/manage.py makemigrations && python ./Mediatheque/man
 
 Lancer le serveur :
 ```sh
-python ./Mediatheque/manage.py runserver
+gunicorn Mediatheque.wsgi
 ```
 
 Après avoir fait l'installation et lancé avec une des méthodes, accèder au site avec l'url suivante :
@@ -35,6 +35,11 @@ http://127.0.0.1:8000/
 ```
 
 ## Développement
+
+Lancer le serveur
+```sh
+python ./Mediatheque/manage.py runserver
+```
 
 Lancer les tests de l'API
 ```sh
