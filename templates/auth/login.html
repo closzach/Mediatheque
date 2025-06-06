@@ -10,7 +10,16 @@
         <h2>Se connecter à un compte existant</h2>
         <form method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
+            {% for field in form %}
+            <div class="mb-3">
+                {{ field.label }}
+                {% if field.field.required %}
+                <span class="text-danger">*</span>
+                {% endif %}
+                <span> :</span>
+                {{ field }}
+            </div>
+            {% endfor %}
             <button type="submit" class="btn btn-primary">Se connecter</button>
         </form>
     </div>
