@@ -29,6 +29,9 @@ class LivreForm(forms.ModelForm):
             'nombre_pages': forms.NumberInput(attrs={
                 'class': 'form-control'
             }),
+            'edition': forms.TextInput(attrs={
+                'class': 'form-control'
+            }),
             'isbn': forms.TextInput(attrs={
                 'class': 'form-control'
             }),

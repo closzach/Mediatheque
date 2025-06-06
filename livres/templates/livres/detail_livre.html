@@ -35,6 +35,9 @@
                         <div class="card-body">
                             <p class="text-muted"><strong>Sorti le :</strong> {{ livre.date_sortie }}</p>
                             <p class="text-muted"><strong>Nombre de pages :</strong> {{ livre.nombre_pages }}</p>
+                            {% if livre.edition %}
+                            <p class="text-muted"><strong>Edition :</strong> {{ livre.edition }}</p>
+                            {% endif %}
                             <p class="text-muted"><strong>ISBN :</strong> {{ livre.isbn }}</p>
 
                             <div class="mt-4">
