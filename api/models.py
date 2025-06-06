@@ -127,6 +127,7 @@ class Lecture(models.Model):
         verbose_name="Note"
     )
     marque_pages = models.PositiveIntegerField(null=True, blank=True)
+    commentaire = models.TextField(null=True, blank=True)
 
     livre = models.ForeignKey(Livre, on_delete=models.CASCADE)
     lecteur = models.ForeignKey(get_user_model(), on_delete=models.PROTECT)
