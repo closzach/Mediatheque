@@ -1,6 +1,14 @@
 {% extends 'base_livres.html' %}
 {% block title %}{{ tag.tag }}{% endblock %}
 {% block content %}
+{% if form.errors %}
+<div class="container mt-3">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ form.errors }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+{% endif %}
 <h1>Modification de {{ tag.tag }}</h1>
 <form method="POST" class="container">
     {% csrf_token %}

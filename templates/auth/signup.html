@@ -6,6 +6,14 @@ Inscription
 {% endblock %}
 
 {% block content %}
+{% if form.errors %}
+<div class="container mt-3">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ form.errors }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+{% endif %}
     <div class="container">
         <h2>Créer un nouveau compte utilisateur</h2>
         <form method="POST">
