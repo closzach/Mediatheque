@@ -6,6 +6,7 @@ from django.utils.timezone import now
 from PIL import Image
 from django.dispatch import receiver
 from django.db.models.signals import pre_delete, pre_save
+from django.core.validators import RegexValidator
 
 class Auteur(models.Model):
     nom = models.CharField(max_length=100)
@@ -54,8 +55,18 @@ class Livre(models.Model):
     nom = models.CharField(max_length=100)
     date_sortie = models.DateField()
     nombre_pages = models.IntegerField()
-    isbn = models.CharField(max_length=100, unique=True, blank=True, null=True)
-    image = models.ImageField(upload_to=renommer_image, default="default.png", blank=True)
+    isbn = models.CharField(
+        max_length=100,
+        unique=True,
+        blank=True,
+        null=True,
+        validators=[RegexValidator(r'^\d+$', 'Seuls les chiffres sont autorisés.')]
+    )
+    image = models.ImageField(
+        upload_to=renommer_image,
+        default="default.png",
+        blank=True
+    )
 
     auteurs = models.ManyToManyField(Auteur)
     tags = models.ManyToManyField(Tag)
