@@ -39,11 +39,14 @@ def detail_livre(request, id):
     tags = livre.tags.all()
     bouton_ajouter = True
     lecture = None
+    souhait = False
     if request.user.is_authenticated:
         if len(Lecture.objects.filter(lecteur=request.user, livre=livre))!=0:
             lecture = Lecture.objects.filter(lecteur=request.user, livre=livre).first()
             bouton_ajouter = False
-    return render(request, 'livres/detail_livre.html', {'livre': livre, 'auteurs': auteurs, 'tags': tags, 'bouton_ajouter': bouton_ajouter, 'lecture': lecture})
+        if livre in Livre.objects.filter(user=request.user):
+            souhait = True
+    return render(request, 'livres/detail_livre.html', {'livre': livre, 'auteurs': auteurs, 'tags': tags, 'bouton_ajouter': bouton_ajouter, 'lecture': lecture, 'souhait': souhait})
 
 @permission_required('api.creer_livre')
 def creer_livre(request):
@@ -260,3 +263,27 @@ def modifier_marque_pages(request, id):
             messages.error(request, "Erreur lors de la mise à jour du marque-pages.")
 
     return redirect('livres:detail_lecture', id=lecture.id)
+
+@login_required
+def ajouter_souhait(request, id):
+    livre = get_object_or_404(Livre, id=id)
+
+    if livre not in Livre.objects.filter(user=request.user):
+        request.user.liste_de_souhaits.add(livre)
+
+    return redirect('livres:detail_livre', id=livre.id)
+
+@login_required
+def retirer_souhait(request, id):
+    livre = get_object_or_404(Livre, id=id)
+
+    if livre in Livre.objects.filter(user=request.user):
+        request.user.liste_de_souhaits.remove(livre)
+
+    return redirect('livres:detail_livre', id=livre.id)
+
+@login_required
+def liste_de_souhaits(request):
+    livres = Livre.objects.filter(user=request.user)
+
+    return render(request, 'liste_de_souhaits/liste_de_souhaits.html', {'livres': livres})

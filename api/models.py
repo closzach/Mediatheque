@@ -38,15 +38,6 @@ class Tag(models.Model):
             ('supprimer_tag', 'Peut supprimer un tag.'),
         )
 
-class User(AbstractUser):
-    date_naissance = models.DateField()
-    cacher_pour_adulte = models.BooleanField(default=True)
-
-    REQUIRED_FIELDS = ['date_naissance']
-
-    def __str__(self):
-        return self.username
-
 def renommer_image(instance, filename):
         extension = os.path.splitext(filename)[1]
         nouveau_nom = f"{instance.id}_{instance.nom}_{now().strftime('%Y%m%d%H%M%S')}{extension}"
@@ -107,6 +98,16 @@ def remplacer_image_livre(sender, instance, **kwargs):
                     os.remove(ancien_livre.image.path)
         except Livre.DoesNotExist:
             pass
+
+class User(AbstractUser):
+    date_naissance = models.DateField()
+    cacher_pour_adulte = models.BooleanField(default=True)
+    liste_de_souhaits = models.ManyToManyField(Livre)
+
+    REQUIRED_FIELDS = ['date_naissance']
+
+    def __str__(self):
+        return self.username
 
 class Lecture(models.Model):
     STATUT_CHOICES = [
