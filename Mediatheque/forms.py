@@ -13,7 +13,7 @@ class UserForm(UserCreationForm):
 
     password1 = forms.CharField(
         widget=forms.PasswordInput(attrs={
-            'type': 'pass',
+            'type': 'password',
             'class': 'form-control'
         }),
         label="Mot de passe"
@@ -21,7 +21,7 @@ class UserForm(UserCreationForm):
 
     password2 = forms.CharField(
         widget=forms.PasswordInput(attrs={
-            'type': 'pass',
+            'type': 'password',
             'class': 'form-control'
         }),
         label="Confirmation du mot de passe"

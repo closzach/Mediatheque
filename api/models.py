@@ -6,6 +6,7 @@ from django.utils.timezone import now
 from PIL import Image
 from django.dispatch import receiver
 from django.db.models.signals import pre_delete, pre_save
+from django.core.validators import RegexValidator
 
 class Auteur(models.Model):
     nom = models.CharField(max_length=100)
@@ -37,15 +38,6 @@ class Tag(models.Model):
             ('supprimer_tag', 'Peut supprimer un tag.'),
         )
 
-class User(AbstractUser):
-    date_naissance = models.DateField()
-    cacher_pour_adulte = models.BooleanField(default=True)
-
-    REQUIRED_FIELDS = ['date_naissance']
-
-    def __str__(self):
-        return self.username
-
 def renommer_image(instance, filename):
         extension = os.path.splitext(filename)[1]
         nouveau_nom = f"{instance.id}_{instance.nom}_{now().strftime('%Y%m%d%H%M%S')}{extension}"
@@ -54,8 +46,20 @@ class Livre(models.Model):
     nom = models.CharField(max_length=100)
     date_sortie = models.DateField()
     nombre_pages = models.IntegerField()
-    isbn = models.CharField(max_length=100, unique=True, blank=True, null=True)
-    image = models.ImageField(upload_to=renommer_image, default="default.png", blank=True)
+    synopsis = models.TextField()
+    edition = models.CharField(max_length=100, blank=True, null=True)
+    isbn = models.CharField(
+        max_length=100,
+        unique=True,
+        blank=True,
+        null=True,
+        validators=[RegexValidator(r'^\d+$', 'Seuls les chiffres sont autorisés.')]
+    )
+    image = models.ImageField(
+        upload_to=renommer_image,
+        default="default.png",
+        blank=True
+    )
 
     auteurs = models.ManyToManyField(Auteur)
     tags = models.ManyToManyField(Tag)
@@ -96,6 +100,16 @@ def remplacer_image_livre(sender, instance, **kwargs):
         except Livre.DoesNotExist:
             pass
 
+class User(AbstractUser):
+    date_naissance = models.DateField()
+    cacher_pour_adulte = models.BooleanField(default=True)
+    liste_de_souhaits = models.ManyToManyField(Livre)
+
+    REQUIRED_FIELDS = ['date_naissance']
+
+    def __str__(self):
+        return self.username
+
 class Lecture(models.Model):
     STATUT_CHOICES = [
         ('a lire', 'À lire'),
@@ -115,6 +129,7 @@ class Lecture(models.Model):
         verbose_name="Note"
     )
     marque_pages = models.PositiveIntegerField(null=True, blank=True)
+    commentaire = models.TextField(null=True, blank=True)
 
     livre = models.ForeignKey(Livre, on_delete=models.CASCADE)
     lecteur = models.ForeignKey(get_user_model(), on_delete=models.PROTECT)

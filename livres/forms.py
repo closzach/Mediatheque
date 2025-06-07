@@ -29,6 +29,12 @@ class LivreForm(forms.ModelForm):
             'nombre_pages': forms.NumberInput(attrs={
                 'class': 'form-control'
             }),
+            'synopsis': forms.Textarea(attrs={
+                'class': 'form-control'
+            }),
+            'edition': forms.TextInput(attrs={
+                'class': 'form-control'
+            }),
             'isbn': forms.TextInput(attrs={
                 'class': 'form-control'
             }),
@@ -155,7 +161,7 @@ class SearchLectureForm(forms.Form):
 class LectureForm(forms.ModelForm):
     class Meta:
         model = Lecture
-        fields = ['date_debut', 'date_fin', 'statut', 'note', 'marque_pages']
+        fields = ['date_debut', 'date_fin', 'statut', 'note', 'marque_pages', 'commentaire']
         widgets = {
             'date_debut': forms.DateInput(
                 attrs={
@@ -185,6 +191,11 @@ class LectureForm(forms.ModelForm):
                 }
             ),
             'marque_pages': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'commentaire': forms.Textarea(
                 attrs={
                     'class': 'form-control'
                 }
