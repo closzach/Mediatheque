@@ -46,6 +46,7 @@ class Livre(models.Model):
     nom = models.CharField(max_length=100)
     date_sortie = models.DateField()
     nombre_pages = models.IntegerField()
+    synopsis = models.TextField()
     edition = models.CharField(max_length=100, blank=True, null=True)
     isbn = models.CharField(
         max_length=100,
