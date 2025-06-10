@@ -77,3 +77,15 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         self.fields['old_password'].widget.attrs.update({'class': 'form-control'})
         self.fields['new_password1'].widget.attrs.update({'class': 'form-control'})
         self.fields['new_password2'].widget.attrs.update({'class': 'form-control'})
+
+class UserSearchForm(forms.Form):
+    recherche = forms.CharField(
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class':'form-control',
+            'placeholder':'Rechercher',
+            'aria-label': 'Rechercher',
+            'aria-describedby': 'search-button'
+        })
+    )

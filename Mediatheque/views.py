@@ -1,7 +1,7 @@
 from random import randint
 from django.db.models import Max
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserForm, UserUpdateForm, CustomPasswordChangeForm
+from .forms import UserForm, UserUpdateForm, CustomPasswordChangeForm, UserSearchForm
 from api.models import Livre, User
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import update_session_auth_hash
@@ -135,3 +135,19 @@ def ajax_toggle_user_group(request, group_id, user_id):
         'user_id': user_id,
         'group_id': group_id
     })
+
+@login_required
+def liste_users(request):
+    if request.method == 'POST':
+        search_form = UserSearchForm(request.POST)
+        if search_form.is_valid():
+            recherche = search_form.cleaned_data['recherche']
+            if recherche == '':
+                utilisateurs = User.objects.all()
+            else:
+                utilisateurs = User.objects.filter(username__icontains=recherche)
+    else:
+        search_form = UserSearchForm()
+        utilisateurs = User.objects.all()
+
+    return render(request, 'users/liste_users.html', {'utilisateurs': utilisateurs, 'search_form': search_form})

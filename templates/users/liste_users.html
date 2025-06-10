@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Liste des Utilisateurs
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="search-section p-4 mb-5 rounded shadow">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ search_form.recherche }}
+            </div>
+            <div class="mt-3">
+                <button class="btn btn-primary" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                    </svg> Rechercher
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="badge bg-secondary fs-6">
+                    {{ utilisateurs|length }} utilisateur{{ utilisateurs|length|pluralize }}
+                </span>
+            </div>
+            <hr class="my-3">
+        </div>
+    </div>
+
+    <div class="row g-4">
+        {% for utilisateur in utilisateurs %}
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-header bg-gradient bg-primary text-white">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-circle me-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-person" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h5 class="card-title mb-0">{{ utilisateur.username }}</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="mb-3">
+                        <strong class="text-muted small">INFORMATIONS GÉNÉRALES</strong>
+                        <hr class="my-2">
+
+                        <div class="mb-2">
+                            <span class="small">
+                            Anniversaire : {{ utilisateur.date_naissance|date:"d/m" }}
+                            </span>
+                        </div>
+
+                        <div class="mb-2">
+                            <span class="small">
+                                Inscrit le {{ utilisateur.date_joined|date:"d/m/Y" }}
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <span class="small">
+                                {% if utilisateur.is_staff %}
+                                <span class="badge bg-warning text-dark">Staff</span>
+                                {% endif %}
+                                {% if utilisateur.is_superuser %}
+                                <span class="badge bg-danger">Admin</span>
+                                {% endif %}
+                                {% if not utilisateur.is_staff and not utilisateur.is_superuser %}
+                                <span class="badge bg-success">Utilisateur</span>
+                                {% endif %}
+                                {% if not utilisateur.is_active %}
+                                <span class="badge bg-secondary">Inactif</span>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+
+                        <div class="mb-2">
+                            <span class="small">
+                                {% if utilisateur.liste_de_souhaits.count > 0 %}
+                                {{ utilisateur.liste_de_souhaits.count }} livre{{ utilisateur.liste_de_souhaits.count|pluralize }} dans sa liste de souhaits
+                                {% else %}
+                                <em class="text-muted">Aucun livre en liste de souhaits</em>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-light border-0">
+                    <div class="d-flex gap-2">
+                        <a href="#" class="btn btn-primary btn-sm flex-fill">
+                            Voir le profil
+                        </a>
+                        {% if perms.auth.change_user %}
+                        <a href="#" class="btn btn-outline-secondary btn-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-pencil" viewBox="0 0 16 16">
+                                <path
+                                    d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
+                            </svg>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .avatar-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+    }
+
+    .card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .bg-gradient {
+        background: linear-gradient(135deg, var(--bs-primary) 0%, var(--bs-primary-dark, #0056b3) 100%);
+    }
+
+    .badge {
+        font-weight: 500;
+    }
+
+    .btn-sm {
+        font-size: 0.8rem;
+    }
+</style>
+{% endblock %}

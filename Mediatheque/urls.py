@@ -57,6 +57,7 @@ urlpatterns = [
     path('add-user-to-group/<int:group_id>/<int:user_id>/', add_user_to_group, name='add_user_to_group'),
     path('remove-user-from-group/<int:group_id>/<int:user_id>/', remove_user_from_group, name='remove_user_from_group'),
     path('ajax-toggle-user-group/<int:group_id>/<int:user_id>/', ajax_toggle_user_group, name='ajax_toggle_user_group'),
+    path('users/', liste_users, name='liste_users'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
