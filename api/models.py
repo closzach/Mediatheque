@@ -51,8 +51,6 @@ class Livre(models.Model):
     isbn = models.CharField(
         max_length=100,
         unique=True,
-        blank=True,
-        null=True,
         validators=[RegexValidator(r'^\d+$', 'Seuls les chiffres sont autorisés.')]
     )
     image = models.ImageField(
