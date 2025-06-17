@@ -42,6 +42,9 @@ class LivreForm(forms.ModelForm):
                 'class': 'form-control'
             })
         }
+        labels = {
+            'isbn': 'ISBN'
+        }
 
     def __init__(self, *args, **kwargs):
         super(LivreForm, self).__init__(*args, **kwargs)
@@ -190,22 +193,23 @@ class LectureForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
+            'commentaire': forms.Textarea(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
             'marque_pages': forms.NumberInput(
                 attrs={
                     'class': 'form-control'
                 }
             ),
-            'commentaire': forms.Textarea(
-                attrs={
-                    'class': 'form-control'
-                }
-            )
         }
         labels = {
             'date_debut': 'Date de début',
             'date_fin': 'Date de fin',
             'statut': 'Statut de lecture',
             'note': 'Note',
+            'commentaire': 'Commentaire',
             'marque_pages': 'Marque-pages',
         }
 
