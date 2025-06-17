@@ -3,6 +3,7 @@ from django.db.models import Max
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserForm, UserUpdateForm, CustomPasswordChangeForm
 from api.models import Livre, User
+from api.utils import est_majeur
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import update_session_auth_hash
 from django.urls import reverse
@@ -15,7 +16,11 @@ def hub(request):
     max_id = Livre.objects.aggregate(max_id=Max('id'))['max_id']
     if max_id:
         random_id = randint(1, max_id)
-        livre = Livre.objects.filter(id=random_id).first()
+        if request.user.is_authenticated and est_majeur(request.user) and not request.user.cacher_pour_adulte:
+            livre = Livre.objects.filter(id=random_id).first()
+        else:
+            max_id = Livre.objects.exclude(tags__pour_adulte=True).aggregate(max_id=Max('id'))['max_id']
+            livre = Livre.objects.exclude(tags__pour_adulte=True).filter(id=random_id).first()
     else:
         livre = None
     return render(request, 'hub.html', {'livre': livre})
