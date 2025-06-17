@@ -74,7 +74,7 @@
             {% else %}
             <p class="text-muted">Aucun résumé disponible pour ce livre.</p>
             {% endif %}
-
+            <hr>
             <p><strong>Note :</strong></p>
             {% if lecture.note %}
             <div>
@@ -93,6 +93,7 @@
             {% else %}
             <p class="text-muted">Vous n'avez pas encore noté ce livre.</p>
             {% endif %}
+            <hr>
             <p><strong>Commentaire :</strong></p>
             {% if lecture.commentaire %}
             <p>{{ lecture.commentaire }}</p>
