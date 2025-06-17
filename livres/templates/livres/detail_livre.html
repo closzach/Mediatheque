@@ -3,86 +3,98 @@
 
 {% block title %}{{ livre.nom }}{% endblock %}
 
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="{{ livre.image.url }}" class="img-fluid rounded-start" alt="{{ livre.nom }}" style="height: 100%; object-fit: cover;">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-header bg-primary text-white position-relative">
-                            <h2>{{ livre.nom }}</h2>
-                            <div class="position-absolute top-0 end-0 mt-2 me-2 d-flex">
-                                {% if perms.api.modifier_livre %}
-                                <a href="{% url 'livres:modifier_livre' livre.id %}" class="btn btn-secondary btn-sm me-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-                                    </svg>
-                                </a>
-                                {% endif %}
-                                {% if perms.api.supprimer_livre %}
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmationModal">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-                                    </svg>
-                                </button>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <p class="text-muted"><strong>Sorti le :</strong> {{ livre.date_sortie }}</p>
-                            <p class="text-muted"><strong>Nombre de pages :</strong> {{ livre.nombre_pages }}</p>
-                            {% if livre.edition %}
-                            <p class="text-muted"><strong>Edition :</strong> {{ livre.edition }}</p>
-                            {% endif %}
-                            <p class="text-muted"><strong>ISBN :</strong> {{ livre.isbn }}</p>
-                            <p class="text-muted"><strong>Synopsis :</strong> {{ livre.synopsis }}</p>
 
-                            <div class="mt-4">
-                                <h5>Auteurs :</h5>
-                                <ul class="list-group list-group-flush">
-                                    {% for auteur in auteurs %}
-                                    <li class="list-group-item">{{ auteur.nom }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-
-                            <div class="mt-4">
-                                <h5>Tags :</h5>
-                                <div class="d-flex flex-wrap">
-                                    {% for tag in tags %}
-                                    <span class="badge bg-secondary m-1">{{ tag.tag }}</span>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer text-center">
-                            {% if bouton_ajouter %}
-                            <a href="{% url 'livres:ajouter_livre' livre.id %}" class="btn btn-outline-primary">Ajouter à la collection</a>
-                            {% endif %}
-                            {% if lecture %}
-                            <a href="{% url 'livres:detail_lecture' lecture.id %}" class="btn btn-outline-primary">Consulter dans la bibliothèque</a>
-                            {% endif %}
-                            <a href="{% url 'livres:rechercher' %}" class="btn btn-outline-primary">Retour à la liste des livres</a>
-                            {% if souhait %}
-                            <a href="{% url 'livres:retirer_souhait' livre.id %}" class="btn btn-outline-primary">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
-                                    <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1"/>
-                                </svg>
-                            </a>
-                            {% else %}
-                            <a href="{% url 'livres:ajouter_souhait' livre.id %}" class="btn btn-outline-primary">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suit-heart" viewBox="0 0 16 16">
-                                    <path d="m8 6.236-.894-1.789c-.222-.443-.607-1.08-1.152-1.595C5.418 2.345 4.776 2 4 2 2.324 2 1 3.326 1 4.92c0 1.211.554 2.066 1.868 3.37.337.334.721.695 1.146 1.093C5.122 10.423 6.5 11.717 8 13.447c1.5-1.73 2.878-3.024 3.986-4.064.425-.398.81-.76 1.146-1.093C14.446 6.986 15 6.131 15 4.92 15 3.326 13.676 2 12 2c-.777 0-1.418.345-1.954.852-.545.515-.93 1.152-1.152 1.595zm.392 8.292a.513.513 0 0 1-.784 0c-1.601-1.902-3.05-3.262-4.243-4.381C1.3 8.208 0 6.989 0 4.92 0 2.755 1.79 1 4 1c1.6 0 2.719 1.05 3.404 2.008.26.365.458.716.596.992a7.6 7.6 0 0 1 .596-.992C9.281 2.049 10.4 1 12 1c2.21 0 4 1.755 4 3.92 0 2.069-1.3 3.288-3.365 5.227-1.193 1.12-2.642 2.48-4.243 4.38z"/>
-                                </svg>
-                            </a>
-                            {% endif %}
-                        </div>
-                    </div>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-4">
+            {% if livre.image %}
+            <img src="{{ livre.image.url }}" class="img-fluid rounded shadow" alt="Image de {{ livre.nom }}">
+            {% else %}
+            <div class="d-flex align-items-center justify-content-center bg-light rounded shadow" style="height: 300px;">
+                <em class="text-muted">Aucune image disponible</em>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-lg-8">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <h1>{{ livre.nom }}</h1>
+                <div class="d-flex gap-2">
+                    {% if perms.api.modifier_livre %}
+                    <a href="{% url 'livres:modifier_livre' livre.id %}" class="btn btn-outline-secondary btn-sm" title="Modifier">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                        </svg>
+                    </a>
+                    {% endif %}
+                    {% if perms.api.supprimer_livre %}
+                    <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmationModal" title="Supprimer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                        </svg>
+                    </button>
+                    {% endif %}
                 </div>
+            </div>
+
+            <p><strong>Date de sortie :</strong> {{ livre.date_sortie|date:"d/m/Y" }}</p>
+            <p><strong>Nombre de pages :</strong> {{ livre.nombre_pages }}</p>
+            {% if livre.edition %}
+            <p><strong>Édition :</strong> {{ livre.edition }}</p>
+            {% endif %}
+            <p><strong>ISBN :</strong> {{ livre.isbn }}</p>
+
+            <hr>
+            <strong>Synopsis :</strong>
+            {% if livre.synopsis %}
+            <p>{{ livre.synopsis }}</p>
+            {% else %}
+            <p class="text-muted">Aucun synopsis disponible.</p>
+            {% endif %}
+
+            {% if auteurs %}
+            <hr>
+            <strong>Auteur(s) :</strong>
+            <ul class="list-unstyled">
+                {% for auteur in auteurs %}
+                <li>{{ auteur.nom }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            {% if tags %}
+            <hr>
+            <strong>Tags :</strong>
+            <div class="d-flex flex-wrap">
+                {% for tag in tags %}
+                <span class="badge bg-secondary m-1">{{ tag.tag }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <hr>
+            <div class="d-flex flex-wrap gap-2 mt-3">
+                {% if bouton_ajouter %}
+                <a href="{% url 'livres:ajouter_livre' livre.id %}" class="btn btn-outline-primary">Ajouter à la collection</a>
+                {% endif %}
+                {% if lecture %}
+                <a href="{% url 'livres:detail_lecture' lecture.id %}" class="btn btn-outline-primary">Consulter dans la bibliothèque</a>
+                {% endif %}
+                <a href="{% url 'livres:rechercher' %}" class="btn btn-outline-secondary">Retour à la liste</a>
+
+                {% if souhait %}
+                <a href="{% url 'livres:retirer_souhait' livre.id %}" class="btn btn-outline-success" title="Retirer des souhaits">
+                    Retirer des souhaits
+                </a>
+                {% else %}
+                <a href="{% url 'livres:ajouter_souhait' livre.id %}" class="btn btn-outline-success" title="Ajouter aux souhaits">
+                    Ajouter aux souhaits
+                </a>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -93,8 +105,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="confirmationModalLabel">Confirmation de suppression</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title">Confirmation de suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
             </div>
             <div class="modal-body">
                 Êtes-vous sûr de vouloir supprimer le livre <strong>{{ livre.nom }}</strong> ?
