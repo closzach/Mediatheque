@@ -68,15 +68,15 @@
             </p>
             {% endif %}
             <hr>
-            <h5>Résumé</h5>
+            <strong>Résumé :</strong>
             {% if lecture.livre.synopsis %}
             <p>{{ lecture.livre.synopsis }}</p>
             {% else %}
             <p class="text-muted">Aucun résumé disponible pour ce livre.</p>
             {% endif %}
 
+            <p><strong>Note :</strong></p>
             {% if lecture.note %}
-            <p><strong>Note:</strong></p>
             <div>
                 {% for i in lecture_range %}
                 {% if i <= lecture.note %}
@@ -92,6 +92,12 @@
             </div>
             {% else %}
             <p class="text-muted">Vous n'avez pas encore noté ce livre.</p>
+            {% endif %}
+            <p><strong>Commentaire :</strong></p>
+            {% if lecture.commentaire %}
+            <p>{{ lecture.commentaire }}</p>
+            {% else %}
+            <p class="text-muted">Vous n'avez pas encore commenté.</p>
             {% endif %}
 
             <div class="mt-4 d-flex gap-2">
