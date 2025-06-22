@@ -97,9 +97,9 @@ def liste_auteurs(request):
 def detail_auteur(request, id):
     auteur = get_object_or_404(Auteur, id=id)
     if request.user.is_authenticated and est_majeur(request.user) and not request.user.cacher_pour_adulte:
-        livres = Livre.objects.prefetch_related('auteurs')
+        livres = Livre.objects.filter(auteurs__id=auteur.id)
     else:
-        livres = Livre.objects.exclude(tags__pour_adulte=True).prefetch_related('auteurs')
+        livres = Livre.objects.exclude(tags__pour_adulte=True).filter(auteurs__id=auteur.id)
     return render(request, 'auteurs/detail_auteur.html', {'auteur': auteur, 'livres': livres})
 
 @permission_required('api.creer_auteur')
