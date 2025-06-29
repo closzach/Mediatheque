@@ -19,14 +19,26 @@ def lister_livres(request):
             tags_recherche = search_form.cleaned_data['tags']
             auteur_recherche = search_form.cleaned_data['auteur']
             if recherche == "":
-                livres = Livre.objects.all()
+                if request.user.is_authenticated and est_majeur(request.user) and not request.user.cacher_pour_adulte:
+                    livres = Livre.objects.prefetch_related('auteurs')
+                else:
+                    livres = Livre.objects.exclude(tags__pour_adulte=True).prefetch_related('auteurs')
             else:
-                livres = Livre.objects.filter(nom__icontains=recherche).prefetch_related('auteurs')
+                if request.user.is_authenticated and est_majeur(request.user) and not request.user.cacher_pour_adulte:
+                    livres = Livre.objects.filter(nom__icontains=recherche).prefetch_related('auteurs')
+                else:
+                    livres = Livre.objects.exclude(tags__pour_adulte=True).filter(nom__icontains=recherche).prefetch_related('auteurs')
             if len(tags_recherche)>0:
                 for tag_recherche in tags_recherche:
-                    livres = livres.filter(tags__id=tag_recherche.id).distinct()
+                    if request.user.is_authenticated and est_majeur(request.user) and not request.user.cacher_pour_adulte:
+                        livres = Livre.objects.filter(tags__id=tag_recherche.id).distinct().prefetch_related('auteurs')
+                    else:
+                        livres = Livre.objects.exclude(tags__pour_adulte=True).filter(tags__id=tag_recherche.id).distinct().prefetch_related('auteurs')
             if auteur_recherche:
-                livres = livres.filter(auteurs__id=auteur_recherche.id)
+                if request.user.is_authenticated and est_majeur(request.user) and not request.user.cacher_pour_adulte:
+                    livres = Livre.objects.filter(auteurs__id=auteur_recherche.id).prefetch_related('auteurs')
+                else:
+                    livres = Livre.objects.exclude(tags__pour_adulte=True).filter(auteurs__id=auteur_recherche.id).prefetch_related('auteurs')
     else:
         search_form = SearchLivreForm()
     return render(request, 'livres/liste_livres.html', {'livres': livres, 'search_form': search_form})
