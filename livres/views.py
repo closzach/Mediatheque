@@ -238,11 +238,14 @@ def detail_lecture(request, id):
     lecture = get_object_or_404(Lecture, id=id)
     lecture_range = range(1, 6)
     lecture_form = MarquePagesForm(instance=lecture)
+    pages_restantes = None
+    if lecture.marque_pages:
+        pages_restantes = lecture.livre.nombre_pages - lecture.marque_pages
 
     if lecture.lecteur != request.user:
         raise PermissionDenied(f"Cette lecture n'appartient pas à {{request.user}}.")
 
-    return render(request, 'lectures/detail_lecture.html', {'lecture': lecture, 'lecture_range': lecture_range, 'form': lecture_form})
+    return render(request, 'lectures/detail_lecture.html', {'lecture': lecture, 'lecture_range': lecture_range, 'form': lecture_form, "pages_restantes": pages_restantes})
 
 @login_required
 def modifier_lecture(request, id):

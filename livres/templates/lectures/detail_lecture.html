@@ -41,9 +41,15 @@
             </p>
             {% if lecture.marque_pages and lecture.statut == "en pause" %}
             <p>
-                <strong>Marque-pages</strong>
+                <strong>Marque-pages :</strong>
                 <span class="badge bg-secondary">{{ lecture.marque_pages }}</span>
             </p>
+            {% endif %}
+            {% if pages_restantes %}
+            <div class="mb-3">
+                <strong>Pages restantes :</strong>
+                <span>{{ pages_restantes }}</span>
+            </div>
             {% endif %}
             {% if lecture.statut == "en cours" %}
             <div class="mb-3">
