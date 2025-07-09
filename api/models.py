@@ -138,3 +138,8 @@ class Lecture(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['livre', 'lecteur'], name='unique_livre_lecteur')
         ]
+
+    def save(self, *args, **kwargs):
+        if self.statut == 'lu' and self.livre and hasattr(self.livre, 'nombre_pages'):
+            self.marque_pages = self.livre.nombre_pages
+        super().save(*args, **kwargs)

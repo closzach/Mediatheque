@@ -45,7 +45,7 @@
                 <span class="badge bg-secondary">{{ lecture.marque_pages }}</span>
             </p>
             {% endif %}
-            {% if pages_restantes %}
+            {% if lecture.statut != "lu" and lecture.statut != "a lire" and pages_restantes %}
             <div class="mb-3">
                 <strong>Pages restantes :</strong>
                 <span>{{ pages_restantes }}</span>
