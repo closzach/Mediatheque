@@ -244,18 +244,23 @@
             {% csrf_token %}
             <div class="mb-4">
                 <label for="recherche" class="form-label fs-5 fw-semibold">
-                    <i class="bi bi-search me-2"></i>Rechercher un livre
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search me-2" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                    </svg>
+                    Rechercher un livre
                 </label>
                 {{ search_form.recherche }}
             </div>
             
-            <!-- Filtres -->
-            <div class="search-filters" id="searchFilters">
+            <div class="search-filters">
                 <div class="row g-4">
-                    <!-- Tags -->
                     <div class="col-lg-8">
                         <label class="form-label fs-6 fw-semibold">
-                            <i class="bi bi-tags me-2"></i>Catégories et genres
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tags me-2" viewBox="0 0 16 16">
+                                <path d="M3 2v4.586l7 7L14.586 9l-7-7zM2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586z"/>
+                                <path d="M5.5 5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m0 1a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3M1 7.086a1 1 0 0 0 .293.707L8.75 15.25l-.043.043a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 0 7.586V3a1 1 0 0 1 1-1z"/>
+                            </svg>
+                            Catégories et genres
                         </label>
                         <div class="tag-container">
                             {% for tag in search_form.tags.field.choices %}
@@ -270,10 +275,12 @@
                         <small class="text-muted">Sélectionnez les genres qui vous intéressent</small>
                     </div>
                     
-                    <!-- Auteur -->
                     <div class="col-lg-4">
                         <label for="auteur" class="form-label fs-6 fw-semibold">
-                            <i class="bi bi-person me-2"></i>Auteur
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+                            </svg>
+                            Auteur
                         </label>
                         {{ search_form.auteur }}
                         <small class="text-muted">Rechercher par nom d'auteur</small>
@@ -282,10 +289,14 @@
                 
                 <div class="d-flex gap-3 mt-4">
                     <button class="btn btn-primary search-btn flex-grow-1" type="submit">
-                        <i class="bi bi-search me-2"></i>Rechercher
+                        Rechercher
                     </button>
                     <button class="btn btn-outline-secondary" type="button" onclick="clearFilters()">
-                        <i class="bi bi-arrow-clockwise me-2"></i>Effacer
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                        </svg>
+                        Effacer
                     </button>
                 </div>
             </div>
@@ -297,16 +308,10 @@
     {% if livres %}
     <div class="results-header">
         <div class="results-count">
-            <i class="bi bi-book me-2"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book me-2" viewBox="0 0 16 16">
+                <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+            </svg>
             {{ livres|length }} livre{{ livres|length|pluralize }} trouvé{{ livres|length|pluralize }}
-        </div>
-        <div class="d-flex gap-2">
-            <button class="btn btn-sm btn-outline-primary" onclick="toggleView('grid')">
-                <i class="bi bi-grid-3x3-gap"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-primary" onclick="toggleView('list')">
-                <i class="bi bi-list"></i>
-            </button>
         </div>
     </div>
     
@@ -326,11 +331,16 @@
                     <h5 class="card-title">{{ livre.nom }}</h5>
                     <div class="book-info flex-grow-1">
                         <p class="mb-2">
-                            <i class="bi bi-calendar3 me-2"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3 me-2" viewBox="0 0 16 16">
+                                <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z"/>
+                                <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                            </svg>
                             <strong>Sortie :</strong> {{ livre.date_sortie|date:"d/m/Y" }}
                         </p>
                         <p class="mb-3">
-                            <i class="bi bi-person me-2"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person me-2" viewBox="0 0 16 16">
+                                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+                            </svg>
                             <strong>Auteur{{ livre.auteurs.all|length|pluralize }}:</strong><br>
                             {{ livre.auteurs.all|join:", " }}
                         </p>
@@ -339,7 +349,7 @@
                 
                 <div class="card-footer bg-transparent border-0 p-3">
                     <a href="{% url 'livres:detail_livre' livre.id %}" class="btn btn-primary detail-btn">
-                        <i class="bi bi-eye me-2"></i>Voir les détails
+                        Voir les détails
                     </a>
                 </div>
             </div>
@@ -357,33 +367,16 @@
 </div>
 
 <script>
-function toggleFilters() {
-    const filters = document.getElementById('searchFilters');
-    filters.classList.toggle('show');
-}
-
 function clearFilters() {
-    // Vider le champ de recherche
     document.querySelector('input[name="recherche"]').value = '';
     
-    // Décocher tous les tags
     document.querySelectorAll('input[name="tags"]').forEach(checkbox => {
         checkbox.checked = false;
     });
     
-    // Vider le champ auteur
     const auteurSelect = document.querySelector('select[name="auteur"]');
     if (auteurSelect) {
         auteurSelect.value = '';
-    }
-}
-
-function toggleView(viewType) {
-    const grid = document.getElementById('booksGrid');
-    if (viewType === 'list') {
-        grid.className = 'row row-cols-1 g-3';
-    } else {
-        grid.className = 'row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4';
     }
 }
 </script>
