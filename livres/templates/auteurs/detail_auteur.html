@@ -17,7 +17,7 @@
                             </svg>
                         </a>
                         {% endif %}
-                        {% if perms.api.supprimer_artiste %}
+                        {% if perms.api.supprimer_auteur %}
                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmationModal">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                                 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
@@ -32,6 +32,9 @@
                     {% endif %}
                     {% if auteur.date_mort %}
                     <p><strong>Décès :</strong> {{ auteur.date_mort }}</p>
+                    {% endif %}
+                    {% if auteur.biographie %}
+                    <p><strong>Biographie :</strong><br>{{ auteur.biographie }}</p>
                     {% endif %}
                     <h5 class="mt-4">Livres :</h5>
                     {% if livres %}

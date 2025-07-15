@@ -67,6 +67,9 @@ class AuteurForm(forms.ModelForm):
             'date_mort': forms.DateInput(attrs={
                 'class': 'form-control',
                 'type': 'date'
+            }),
+            'biographie': forms.Textarea(attrs={
+                'class': 'form-control'
             })
         }
 
