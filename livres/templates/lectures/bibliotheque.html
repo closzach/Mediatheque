@@ -14,20 +14,56 @@
         font-weight: 600;
         transition: all 0.3s ease;
         box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+        color: white;
     }
-    
+
     .add-book-btn:hover {
         transform: translateY(-3px);
         box-shadow: 0 6px 20px rgba(40, 167, 69, 0.6);
+    }
+
+    .search-section {
+        background-color: #f8f9fa;
+        padding: 20px;
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .card-body {
+        padding: 1rem 1rem 0.5rem;
+    }
+
+    .card-text {
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+    .card-footer {
+        background-color: transparent;
+        border-top: none;
+        padding: 0.5rem 1rem 1rem;
+    }
+
+    .no-books-message {
+        font-size: 1.1rem;
+        padding: 2rem;
+        text-align: center;
+        color: #777;
+        background-color: #f1f1f1;
+        border-radius: 10px;
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="mb-3">
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">📚 Ma bibliothèque</h2>
         {% if user.is_authenticated %}
-        <a class="btn btn-light add-book-btn" href="{% url 'livres:rechercher' %}">
+        <a class="add-book-btn btn" href="{% url 'livres:rechercher' %}">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle me-2" viewBox="0 0 16 16">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
@@ -36,62 +72,69 @@
         </a>
         {% endif %}
     </div>
-    <div class="search-section mb-5 rounded shadow">
-        <form method="POST">
+
+    <div class="search-section rounded shadow-sm mb-5">
+        <form method="POST" class="needs-validation" novalidate>
             {% csrf_token %}
-            <div class="row g-3">
+            <div class="row g-3 align-items-end">
                 <div class="col-md-8">
+                    <label for="id_recherche" class="form-label">Recherche</label>
                     {{ search_form.recherche }}
                 </div>
                 <div class="col-md-4">
+                    <label for="id_statut" class="form-label">Statut</label>
                     {{ search_form.statut }}
                 </div>
             </div>
-            <div class="mt-3 text-end">
+            <div class="mt-4 text-end">
                 <button class="btn btn-primary" type="submit">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search me-1" viewBox="0 0 16 16">
                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                    </svg> Rechercher
+                    </svg>
+                    Rechercher
                 </button>
             </div>
         </form>
     </div>
+
+    {% if lectures %}
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {% for lecture in lectures %}
         <div class="col">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">{{ lecture.livre.nom }}</h5>
-                    <p class="card-text">
-                        <strong>Auteur(s) :</strong> {{ lecture.livre.auteurs.all|join:", " }}<br>
-                        <strong>Statut :</strong> {{ lecture.statut|default:"Non spécifié" }}<br>
-                        {% if lecture.date_debut %}
-                        <strong>Début :</strong> {{ lecture.date_debut|date:"d/m/Y" }}<br>
-                        {% endif %}
-                        {% if lecture.date_fin %}
-                        <strong>Fin :</strong> {{ lecture.date_fin|date:"d/m/Y" }}<br>
-                        {% endif %}
-                    </p>
-                </div>
+            <div class="card h-100 shadow-sm border-0">
                 {% if lecture.livre.image %}
                 <img src="{{ lecture.livre.image.url }}" class="card-img-top" alt="Image du livre">
                 {% else %}
-                <div class="card-img-top text-center p-4 bg-light text-muted">
-                    <em>Aucune image disponible</em>
+                <div class="card-img-top d-flex justify-content-center align-items-center p-5 bg-light text-muted" style="height: 200px;">
+                    <em>Aucune image</em>
                 </div>
                 {% endif %}
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <h5 class="card-title text-center">{{ lecture.livre.nom }}</h5>
+                    <p class="card-text">
+                        <strong>Auteur(s)&nbsp;:</strong> {{ lecture.livre.auteurs.all|join:", " }}<br>
+                        <strong>Statut&nbsp;:</strong> {{ lecture.statut|default:"Non spécifié" }}<br>
+                        {% if lecture.date_debut %}
+                        <strong>Début&nbsp;:</strong> {{ lecture.date_debut|date:"d/m/Y" }}<br>
+                        {% endif %}
+                        {% if lecture.date_fin %}
+                        <strong>Fin&nbsp;:</strong> {{ lecture.date_fin|date:"d/m/Y" }}<br>
+                        {% endif %}
+                    </p>
+                </div>
                 <div class="card-footer text-end">
-                    <a href="{% url 'livres:detail_lecture' lecture.id %}" class="btn btn-primary btn-sm">
+                    <a href="{% url 'livres:detail_lecture' lecture.id %}" class="btn btn-outline-primary btn-sm">
                         Voir les détails
                     </a>
                 </div>
             </div>
         </div>
-        {% empty %}
-        <div class="col">
-            <p class="text-muted">Aucun livre dans votre bibliothèque pour l'instant.</p>
-        </div>
         {% endfor %}
     </div>
+    {% else %}
+    <div class="no-books-message mt-5">
+        😕 Aucun livre trouvé.<br>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

@@ -143,14 +143,14 @@ class SearchLectureForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={
             'class':'form-control',
-            'placeholder':'Rechercher',
+            'placeholder':'Recherche',
             'aria-label': 'Rechercher',
             'aria-describedby': 'search-button'
         })
     )
     statut = forms.ChoiceField(
         choices=[
-            ('', ''),
+            ('', '----------'),
             ('a lire', 'À lire'),
             ('lu', 'Lu'),
             ('en cours', 'En cours'),
