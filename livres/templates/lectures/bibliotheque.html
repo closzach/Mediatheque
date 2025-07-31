@@ -98,8 +98,10 @@
     </div>
 
     {% if lectures %}
+    {% if lectures_en_cours %}
+    <h4 class="mt-5 mb-3">📖 Lectures en cours</h4>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        {% for lecture in lectures %}
+        {% for lecture in lectures_en_cours %}
         <div class="col">
             <div class="card h-100 shadow-sm border-0">
                 {% if lecture.livre.image %}
@@ -131,6 +133,151 @@
         </div>
         {% endfor %}
     </div>
+    {% endif %}
+    {% if lectures_en_pause %}
+    <h4 class="mt-5 mb-3">⏸️ En pause</h4>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for lecture in lectures_en_pause %}
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+                {% if lecture.livre.image %}
+                <img src="{{ lecture.livre.image.url }}" class="card-img-top" alt="Image du livre">
+                {% else %}
+                <div class="card-img-top d-flex justify-content-center align-items-center p-5 bg-light text-muted" style="height: 200px;">
+                    <em>Aucune image</em>
+                </div>
+                {% endif %}
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <h5 class="card-title text-center">{{ lecture.livre.nom }}</h5>
+                    <p class="card-text">
+                        <strong>Auteur(s)&nbsp;:</strong> {{ lecture.livre.auteurs.all|join:", " }}<br>
+                        <strong>Statut&nbsp;:</strong> {{ lecture.statut|default:"Non spécifié" }}<br>
+                        {% if lecture.date_debut %}
+                        <strong>Début&nbsp;:</strong> {{ lecture.date_debut|date:"d/m/Y" }}<br>
+                        {% endif %}
+                        {% if lecture.date_fin %}
+                        <strong>Fin&nbsp;:</strong> {{ lecture.date_fin|date:"d/m/Y" }}<br>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="card-footer text-end">
+                    <a href="{% url 'livres:detail_lecture' lecture.id %}" class="btn btn-outline-primary btn-sm">
+                        Voir les détails
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if lectures_lues %}
+    <h4 class="mt-5 mb-3">✅ Terminées</h4>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for lecture in lectures_lues %}
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+                {% if lecture.livre.image %}
+                <img src="{{ lecture.livre.image.url }}" class="card-img-top" alt="Image du livre">
+                {% else %}
+                <div class="card-img-top d-flex justify-content-center align-items-center p-5 bg-light text-muted" style="height: 200px;">
+                    <em>Aucune image</em>
+                </div>
+                {% endif %}
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <h5 class="card-title text-center">{{ lecture.livre.nom }}</h5>
+                    <p class="card-text">
+                        <strong>Auteur(s)&nbsp;:</strong> {{ lecture.livre.auteurs.all|join:", " }}<br>
+                        <strong>Statut&nbsp;:</strong> {{ lecture.statut|default:"Non spécifié" }}<br>
+                        {% if lecture.date_debut %}
+                        <strong>Début&nbsp;:</strong> {{ lecture.date_debut|date:"d/m/Y" }}<br>
+                        {% endif %}
+                        {% if lecture.date_fin %}
+                        <strong>Fin&nbsp;:</strong> {{ lecture.date_fin|date:"d/m/Y" }}<br>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="card-footer text-end">
+                    <a href="{% url 'livres:detail_lecture' lecture.id %}" class="btn btn-outline-primary btn-sm">
+                        Voir les détails
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if lectures_a_lire %}
+    <h4 class="mt-5 mb-3">📚 À lire</h4>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for lecture in lectures_a_lire %}
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+                {% if lecture.livre.image %}
+                <img src="{{ lecture.livre.image.url }}" class="card-img-top" alt="Image du livre">
+                {% else %}
+                <div class="card-img-top d-flex justify-content-center align-items-center p-5 bg-light text-muted" style="height: 200px;">
+                    <em>Aucune image</em>
+                </div>
+                {% endif %}
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <h5 class="card-title text-center">{{ lecture.livre.nom }}</h5>
+                    <p class="card-text">
+                        <strong>Auteur(s)&nbsp;:</strong> {{ lecture.livre.auteurs.all|join:", " }}<br>
+                        <strong>Statut&nbsp;:</strong> {{ lecture.statut|default:"Non spécifié" }}<br>
+                        {% if lecture.date_debut %}
+                        <strong>Début&nbsp;:</strong> {{ lecture.date_debut|date:"d/m/Y" }}<br>
+                        {% endif %}
+                        {% if lecture.date_fin %}
+                        <strong>Fin&nbsp;:</strong> {{ lecture.date_fin|date:"d/m/Y" }}<br>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="card-footer text-end">
+                    <a href="{% url 'livres:detail_lecture' lecture.id %}" class="btn btn-outline-primary btn-sm">
+                        Voir les détails
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if lectures_abandonnees %}
+    <h4 class="mt-5 mb-3">❌ Abandonnées</h4>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for lecture in lectures_abandonnees %}
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+                {% if lecture.livre.image %}
+                <img src="{{ lecture.livre.image.url }}" class="card-img-top" alt="Image du livre">
+                {% else %}
+                <div class="card-img-top d-flex justify-content-center align-items-center p-5 bg-light text-muted" style="height: 200px;">
+                    <em>Aucune image</em>
+                </div>
+                {% endif %}
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <h5 class="card-title text-center">{{ lecture.livre.nom }}</h5>
+                    <p class="card-text">
+                        <strong>Auteur(s)&nbsp;:</strong> {{ lecture.livre.auteurs.all|join:", " }}<br>
+                        <strong>Statut&nbsp;:</strong> {{ lecture.statut|default:"Non spécifié" }}<br>
+                        {% if lecture.date_debut %}
+                        <strong>Début&nbsp;:</strong> {{ lecture.date_debut|date:"d/m/Y" }}<br>
+                        {% endif %}
+                        {% if lecture.date_fin %}
+                        <strong>Fin&nbsp;:</strong> {{ lecture.date_fin|date:"d/m/Y" }}<br>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="card-footer text-end">
+                    <a href="{% url 'livres:detail_lecture' lecture.id %}" class="btn btn-outline-primary btn-sm">
+                        Voir les détails
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
     {% else %}
     <div class="no-books-message mt-5">
         😕 Aucun livre trouvé.<br>

@@ -206,7 +206,12 @@ def bibliotheque(request):
                 lectures = lectures.filter(statut=statut)
     else:
         search_form = SearchLectureForm()
-    return render(request, 'lectures/bibliotheque.html', {'lectures': lectures, 'search_form': search_form})
+    lectures_a_lire = lectures.filter(statut='a lire')
+    lectures_lues = lectures.filter(statut='lu')
+    lectures_en_cours = lectures.filter(statut='en cours')
+    lectures_abandonnees = lectures.filter(statut='abandonne')
+    lectures_en_pause = lectures.filter(statut='en pause')
+    return render(request, 'lectures/bibliotheque.html', {'lectures': lectures, 'lectures_a_lire': lectures_a_lire, 'lectures_lues': lectures_lues, 'lectures_en_cours': lectures_en_cours, 'lectures_abandonnees': lectures_abandonnees, 'lectures_en_pause': lectures_en_pause, 'search_form': search_form})
 
 @login_required
 def ajouter_livre(request, id):
