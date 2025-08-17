@@ -6,6 +6,7 @@ from api.models import Livre, Auteur, Tag, Lecture
 from django.contrib.auth.decorators import login_required, permission_required
 from api.utils import est_majeur
 from django.contrib import messages
+from django.db.models import Avg
 
 def lister_livres(request):
     if request.user.is_authenticated and est_majeur(request.user) and not request.user.cacher_pour_adulte:
@@ -47,32 +48,23 @@ def detail_livre(request, id):
     livre = get_object_or_404(Livre, id=id)
     if len(livre.tags.filter(pour_adulte=True))>0 and (not request.user.is_authenticated or not est_majeur(request.user) or request.user.cacher_pour_adulte):
         raise PermissionDenied("Vous ne pouvez pas voir ce contenu.")
-
-    # moyenne
-    somme_notes = 0
-    nb_note = 0
-    lectures = Lecture.objects.filter(livre=livre)
-    for lecture in lectures:
-        if lecture.note:
-            somme_notes += lecture.note
-            nb_note += 1
-    if nb_note == 0:
-        moyenne = None
-    else:
-        moyenne = round(somme_notes / nb_note, 1)
-    
-
     auteurs = livre.auteurs.all()
     tags = livre.tags.all()
     bouton_ajouter = True
     lecture = None
     souhait = False
+
     if request.user.is_authenticated:
         if len(Lecture.objects.filter(lecteur=request.user, livre=livre))!=0:
             lecture = Lecture.objects.filter(lecteur=request.user, livre=livre).first()
             bouton_ajouter = False
         if livre in Livre.objects.filter(user=request.user):
             souhait = True
+
+    moyenne = Lecture.objects.filter(livre=livre, note__isnull=False).aggregate(moyenne=Avg('note'))['moyenne']
+    if moyenne:
+        moyenne = round(moyenne, 1)
+
     return render(request, 'livres/detail_livre.html', {'livre': livre, 'auteurs': auteurs, 'tags': tags, 'bouton_ajouter': bouton_ajouter, 'lecture': lecture, 'souhait': souhait, 'moyenne': moyenne})
 
 @permission_required('api.creer_livre')
