@@ -121,7 +121,7 @@ class SearchLivreForm(forms.Form):
         })
     )
     tags = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.all(),
+        queryset=Tag.objects.all().order_by("tag"),
         required=False,
         widget=forms.CheckboxSelectMultiple(
             attrs={
@@ -130,7 +130,7 @@ class SearchLivreForm(forms.Form):
         )
     )
     auteur = forms.ModelChoiceField(
-        queryset=Auteur.objects.all(),
+        queryset=Auteur.objects.all().order_by("nom"),
         required=False,
         widget=forms.Select(attrs={
             'class': 'form-select',
