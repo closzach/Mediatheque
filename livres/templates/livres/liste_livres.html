@@ -255,24 +255,32 @@
             <div class="search-filters">
                 <div class="row g-4">
                     <div class="col-lg-8">
-                        <label class="form-label fs-6 fw-semibold">
+                        <button class="btn form-label fs-6 fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTags" aria-expanded="false" aria-controls="collapseTags" id="toggleButton">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tags me-2" viewBox="0 0 16 16">
                                 <path d="M3 2v4.586l7 7L14.586 9l-7-7zM2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586z"/>
                                 <path d="M5.5 5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m0 1a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3M1 7.086a1 1 0 0 0 .293.707L8.75 15.25l-.043.043a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 0 7.586V3a1 1 0 0 1 1-1z"/>
                             </svg>
                             Catégories et genres
-                        </label>
-                        <div class="tag-container">
-                            {% for tag in search_form.tags.field.choices %}
-                            <div class="tag-item">
-                                <input type="checkbox" class="tag-checkbox" id="tag_{{ tag.0 }}" name="tags" value="{{ tag.0 }}" {% if tag.0 in selected_tags %}checked{% endif %}>
-                                <label class="tag-label" for="tag_{{ tag.0 }}">
-                                    {{ tag.1 }}
-                                </label>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16" id="iconDown">
+                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill d-none" viewBox="0 0 16 16" id="iconUp">
+                                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                            </svg>
+                        </button>
+                        <div class="collapse" id="collapseTags">
+                            <div class="tag-container">
+                                {% for tag in search_form.tags.field.choices %}
+                                <div class="tag-item">
+                                    <input type="checkbox" class="tag-checkbox" id="tag_{{ tag.0 }}" name="tags" value="{{ tag.0 }}" {% if tag.0 in selected_tags %}checked{% endif %}>
+                                    <label class="tag-label" for="tag_{{ tag.0 }}">
+                                        {{ tag.1 }}
+                                    </label>
+                                </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
+                            <small class="text-muted">Sélectionnez les genres qui vous intéressent</small>
                         </div>
-                        <small class="text-muted">Sélectionnez les genres qui vous intéressent</small>
                     </div>
                     
                     <div class="col-lg-4">
@@ -379,5 +387,21 @@ function clearFilters() {
         auteurSelect.value = '';
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const collapseElement = document.getElementById('collapseTags');
+    const iconDown = document.getElementById('iconDown');
+    const iconUp = document.getElementById('iconUp');
+
+    collapseElement.addEventListener('shown.bs.collapse', function () {
+        iconDown.classList.add('d-none');
+        iconUp.classList.remove('d-none');
+    });
+
+    collapseElement.addEventListener('hidden.bs.collapse', function () {
+        iconUp.classList.add('d-none');
+        iconDown.classList.remove('d-none');
+    });
+});
 </script>
 {% endblock %}
