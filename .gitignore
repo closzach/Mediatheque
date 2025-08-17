@@ -3,5 +3,4 @@ __pycache__
 node_modules
 migrations
 venv
-media/livres/*
 config.ini
